@@ -2,7 +2,7 @@ package reglas;
 import java.io.*;
 import java.util.*;
 
-/**  generacion de reglas de Asosciacion, implementando el algoritmo Apriori
+/**  generacion de reglas de Asociacion, implementando el algoritmo Apriori
  *  para la extraccion de los itemsets frecuentes
  *
  * Los dataset leidos son de enteros (>=0) separados por espacios, una transaccion por linea, ej.
@@ -39,21 +39,11 @@ public class Apriori {
     private static List < Itemsets > efes = new ArrayList <> ();
     
     static int cont=1;
-    
-    /** para ejecutarlo de la comandera  */
-    private boolean usedAsLibrary = false;
+  
 
-    /** el algoritmo central */
-    public  Apriori(String[] args, Observer ob) throws Exception
-    {
-    	usedAsLibrary = false;
-    	datosConfiguracion(args);
-    	ejecutar();
-    }
-
-    /** generates the apriori itemsets from a file
+    /** generar apriori itemsets desde un dataser
      * 
-     * @param args configuration parameters: args[0] is a filename, args[1] the min support (e.g. 0.8 for 80%)
+     * @param args parametros configuracion: args[0] nombre del data, args[1] el minSup (e.g. 0.8 para 80%)
      */
     public  Apriori(String[] args) throws Exception
     {
@@ -72,7 +62,7 @@ public class Apriori {
         int itemsetNumber=1; //indice de F
         int nbFrequentSets=0;
         
-        while (itemsets.size()>0)
+        while (itemsets.size()>0 && itemsetNumber<=minItemsets)
         {
             //vamos verificando que los itemsets cumplan en minSup -- generacion de los Fk
             generarItemsetFrecuentes();
@@ -81,7 +71,7 @@ public class Apriori {
             {
                 nbFrequentSets+=itemsets.size();
                 log("Found "+itemsets.size()+" frequent itemsets of size " + itemsetNumber + " (with support "+(minSup*100)+"%)");;
-                createNewItemsetsFromPreviousOnes();
+                crearItemsetsApartirdeAteriores();
             }
 
             itemsetNumber++;
@@ -92,11 +82,15 @@ public class Apriori {
         log("Tiempo de ejecucion: "+((double)(end-start)/1000) + " segundos.");
         log("Encontrados "+nbFrequentSets+ " itemset frecuentes "+(minSup*100)+"% (absolute "+Math.round(numTransactions*minSup)+")");
         log("Fin Itemset frecuentes");
-	GenerarRegla();
+        
+        for (int i = 1; i < efes.size(); i++) {
+            Itemsets itemset = efes.get(i);
+            itemset.GenerarRegla(minConf);
+        }
     }
 
-    /** entra el item frecuante y si soporte, sale una tupla de ahí  */
-    private void foundFrequentItemSet(int[] itemset, int support) {
+    /** entra el item frecuante y su soporte, se arma una tupla para luego generar las reglas con eso  */
+    private void generarTuplas(int[] itemset, int support) {
     	String New, New1;
 	 	New = Arrays.toString(itemset);
                 
@@ -117,20 +111,20 @@ public class Apriori {
     {        
         // dataset
         if (args.length!=0) transaFile = args[0];
-        else transaFile = "dat2.dat"; // default
+        else transaFile = "chess.dat"; // default
 
     	// minSup
     	if (args.length>=2) minSup=(Double.valueOf(args[1]).doubleValue());    	
-    	else minSup = .3;// by default
-    	if (minSup>1 || minSup<0) throw new Exception("minSup: bad value");
+    	else minSup = .5;// by default
+    	if (minSup>1 || minSup<0) throw new Exception("minSup: valor incorrecto");
 	
 	// minCong
 	if (args.length >= 3) minConf = (Double.valueOf(args[2]).doubleValue());
-	else minConf = .7;
-	if (minConf > 1 || minConf < 0) throw new Exception("minConf: bad value");
+	else minConf = .79;
+	if (minConf > 1 || minConf < 0) throw new Exception("minConf: valor incorrecto");
     	
         //limite de itemsets
-        
+        minItemsets = 2;
     	
     	// calculamos del dataset el nro de items y de transacciones
     	numItems = 0;
@@ -138,7 +132,7 @@ public class Apriori {
     	BufferedReader data_in = new BufferedReader(new FileReader(transaFile));
     	while (data_in.ready()) {    		
     		String line=data_in.readLine();
-    		if (line.matches("\\s*")) continue; // be friendly with empty lines
+    		if (line.matches("\\s*")) continue; // be friendly con lineas vacias
     		numTransactions++;
     		StringTokenizer t = new StringTokenizer(line," ");
     		while (t.hasMoreTokens()) {
@@ -155,7 +149,7 @@ public class Apriori {
    /** info de la corrida
      */ 
 	private void outputConfig() {
-		//output config info to the user
+		//output config
 		 log("Input configuration: "+numItems+" items, "+numTransactions+" transactions, ");
 		 log("minsup = "+minSup+"%");
 	}
@@ -173,19 +167,18 @@ public class Apriori {
 	}
 			
     /**
-     * if m is the size of the current itemsets,
-     * generate all possible itemsets of size n+1 from pairs of current itemsets
-     * replaces the itemsets of itemsets by the new ones
+     * si m es el tamano de los itemsets actuales,
+     * generamos los candidatos de tamano m+1 a partir de los actuales
      */
-    private void createNewItemsetsFromPreviousOnes()
+    private void crearItemsetsApartirdeAteriores()
     {
-    	// by construction, all existing itemsets have the same size
+    	// en teoria, los itemsets existenetes tienen el mismo tamano
     	int currentSizeOfItemsets = itemsets.get(0).length;
     	log("Generando itemsets de tamaño "+(currentSizeOfItemsets+1)+" a partir de "+itemsets.size()+" itemsets de tamaño "+currentSizeOfItemsets);
     		
-    	HashMap<String, int[]> tempCandidates = new HashMap<String, int[]>(); //temporary candidates
+    	HashMap<String, int[]> tempCandidates = new HashMap<String, int[]>(); //candidatos temporales
     	
-        // compare each pair of itemsets of size n-1 - genermaos los candidateos
+        // compare each pair of itemsets of size n-1 - generamos los candidatos
         for(int i=0; i<itemsets.size(); i++)
         {
             for(int j=i+1; j<itemsets.size(); j++)
@@ -195,14 +188,13 @@ public class Apriori {
 
                 assert (X.length==Y.length);
                 
-                //make a string of the first n-2 tokens of the strings
                 int [] newCand = new int[currentSizeOfItemsets+1];
                 for(int s=0; s<newCand.length-1; s++) {
                 	newCand[s] = X[s];
                 }
                     
                 int ndifferent = 0;
-                // then we find the missing value
+                // se encuentran los valores que faltan
                 for(int s1=0; s1<Y.length; s1++)
                 {
                 	boolean found = false;
@@ -213,15 +205,15 @@ public class Apriori {
                     		break;
                     	}
                 	}
-                	if (!found){ // Y[s1] is not in X
+                	if (!found){ // Y[s1] no esta en X
                 		ndifferent++;
-                		// we put the missing value at the end of newCand
+                		// colocamos los valores que falta en newCand
                 		newCand[newCand.length -1] = Y[s1];
                 	}
             	
             	}
                 
-                // we have to find at least 1 different, otherwise it means that we have two times the same set in the existing candidates
+                // encontrar al menos 1 diferente, sino significa que tenemos algun candidato repetido
                 assert(ndifferent>0);
                 
                 
@@ -235,7 +227,7 @@ public class Apriori {
             }
         }
         
-        //set the new itemsets
+        //se muetran los itemsets generados
         itemsets = new ArrayList<int[]>(tempCandidates.values());
     	log("Se generaron"+itemsets.size()+" candidatos de tamaño "+(currentSizeOfItemsets+1));
 
@@ -252,22 +244,24 @@ public class Apriori {
 	    {
 	    	
 	        int parsedVal = Integer.parseInt(stFile.nextToken());
-			trans[parsedVal]=true; //if it is not a 0, assign the value to true
+			trans[parsedVal]=true; //si no es 0, poner en verdadero
 	    }
     }
 
     
-    /** passes through the data to measure the frequency of sets in {@link itemsets},
+    /** analizar la frecuencia de los itemsets {@link itemsets},
      *  filtra todos los que no superan el minSupp
      */
     private void generarItemsetFrecuentes() throws Exception
     {
     	
         log("Procesando " + itemsets.size()+ " itemsets de tamaño "+itemsets.get(0).length);
+        
+        
 
         List<int[]> frequentCandidates = new ArrayList<int[]>(); //aca se van a guardar los que cumplan minSup
 
-        boolean match; //whether the transaction has all the items in an itemset
+        boolean match; //bandera para comprobar que el itemset esta en la transaccion
         int count[] = new int[itemsets.size()]; //la cantidad de candidatos, se inicializa en 0
 
 		// hay que obtener el soporte de los candidatos del dataset
@@ -310,96 +304,16 @@ public class Apriori {
 			// si el count% es mayor que el minSup%, agregamos el candidato a 
 			// los candidatos frecuentes
 			if ((count[i] / (double) (numTransactions)) >= minSup) {
-				foundFrequentItemSet(itemsets.get(i),count[i]);
+				generarTuplas(itemsets.get(i),count[i]);
 				frequentCandidates.add(itemsets.get(i));
 			}
 			//else log("-- Remove candidate: "+ Arrays.toString(candidates.get(i)) + "  is: "+ ((count[i] / (double) numTransactions)));
 		}
-
-        //los nuevos candidatos son solo los candidatos frecuentes
+        List copia = new ArrayList(tupples);
+        efes.add(new Itemsets(copia));
+        //vamos guardando los candidatos frecuentes(generacion de los F)
         itemsets = frequentCandidates;
         
     }
-    
-	public static void GenerarRegla() {
-                //tupples.remove(tupples.size()-1);
-		int b = tupples.size();
-                
-                System.out.println(tupples);
-		if (b == 0) {
-			System.exit(0);
-		}
-		int i,
-		j,
-		k = 0,
-		m = 0;
-		String newb = tupples.get(b - 1);
-		int a = ((newb.substring(1, newb.length() - 1).split(", ")).length);
-                //ArrayList<ArrayList> lista = new ArrayList<>();
-                 //ArrayList<Integer> listasup = new ArrayList<>();
-		int[][] f = new int[b][a - 1];
-		int[] sup = new int[b];
-		for (i = 0; i < b; i++) {
-			newb = tupples.get(i);
-                        //ArrayList<Integer> hola = new ArrayList<>();
-			String[] poop = newb.substring(1, newb.length() - 1).split(", ");
-			for (j = 0; j < poop.length - 1; j++) {
-				f[i][j] = Integer.parseInt(poop[j]);
-                                //hola.add(Integer.parseInt(poop[j]));
-                                
-			}
-                        //lista.add(hola);
-			sup[i] = Integer.parseInt(poop[j]);
-                        //listasup.add(Integer.parseInt(poop[j]));
-			if ((j + 1) == a && k == 0) {
-				k = i;
-			}
-			poop = null;
-		}
-		System.out.println("\nReglas de Asociacion: con una confianza minima de =" + minConf * 100 + "%");
-		for (i = k; i < b; i++) {
-			for (j = 0; j < k; j++) {
-				m += imprimirRegla(f[i], f[j], sup[i], sup[j]);
-			}
-		}
-		if (m == 0) {
-			System.out.println("No existen reglas que superen en minimo de confianza " + minConf * 100 + "%");
-		}
-	}
-	public static int imprimirRegla(int[] a, int[] b, int a1, int b1) {
-		String win = "(",
-		lose = "(";
-		int i,
-		j,
-		k = 0;
-		int[] loss = new int[a.length];
-		for (i = 0; i < b.length && b[i] != 0; i++) {
-			k = 1;
-			win = win + b[i] + ",";
-			for (j = 0; j < a.length ; j++) {
-				if (b[i] == a[j]) {
-					k = 0;
-					loss[j] = 1;
-				}
-			}
-		}
-		win = win.substring(0, win.length() - 1) + ")";
-		for (i = 0; i < a.length && a[i]!= 0; i++) {
-			if (loss[i] == 0) {
-				lose = lose + a[i] + ",";
-			}
-		}
-		lose = lose.substring(0, lose.length() - 1) + ")";
-		if (k == 0) {
-			double Lol = (double) a1 / b1;
-			if (Lol > minConf) {
-                            
-				System.out.printf(cont+"%s ==> %s :	%.2f%c \n", win, lose, Lol * 100, 37);
-                                cont++;
-				return 1;
-			}
-		}
-		return 0;
-	}
         
 }
