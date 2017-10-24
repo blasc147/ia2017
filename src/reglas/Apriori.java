@@ -82,11 +82,15 @@ public class Apriori {
         log("Tiempo de ejecucion: "+((double)(end-start)/1000) + " segundos.");
         log("Encontrados "+nbFrequentSets+ " itemset frecuentes "+(minSup*100)+"% (absolute "+Math.round(numTransactions*minSup)+")");
         log("Fin Itemset frecuentes");
+        System.out.println("Encontrados "+nbFrequentSets+ " itemset frecuentes "+(minSup*100)+"% (absolute "+Math.round(numTransactions*minSup)+")");
+        System.out.println("Tiempo de ejecucion: "+((double)(end-start)/1000) + " segundos.");
         
         for (int i = 1; i < efes.size(); i++) {
             Itemsets itemset = efes.get(i);
             itemset.GenerarRegla(minConf);
         }
+        System.out.println("Cantidad de reglas: "+Itemsets.cantReglas);
+        System.out.println("Tiempo de ejecucion: "+((double)(end-start)/1000) + " segundos.");
     }
 
     /** entra el item frecuante y su soporte, se arma una tupla para luego generar las reglas con eso  */
@@ -115,16 +119,16 @@ public class Apriori {
 
     	// minSup
     	if (args.length>=2) minSup=(Double.valueOf(args[1]).doubleValue());    	
-    	else minSup = .5;// by default
+    	else minSup = .1;// by default
     	if (minSup>1 || minSup<0) throw new Exception("minSup: valor incorrecto");
 	
 	// minCong
 	if (args.length >= 3) minConf = (Double.valueOf(args[2]).doubleValue());
-	else minConf = .79;
+	else minConf = .2999;
 	if (minConf > 1 || minConf < 0) throw new Exception("minConf: valor incorrecto");
     	
         //limite de itemsets
-        minItemsets = 2;
+        minItemsets = 3;
     	
     	// calculamos del dataset el nro de items y de transacciones
     	numItems = 0;

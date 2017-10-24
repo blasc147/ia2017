@@ -15,6 +15,8 @@ import java.util.List;
 public class Itemsets {
     
     private List < String > itemsets = new ArrayList <> ();
+    
+    public static int cantReglas =0;
 
     public List<String> getItemsets() {
         return itemsets;
@@ -76,9 +78,11 @@ public class Itemsets {
 		j,
 		k = 0;
 		int[] loss = new int[a.length];
+                int check = 0;
 		for (i = 0; i < b.length && b[i] != 0; i++) {
 			k = 1;
 			win = win + b[i] + ",";
+                        check++;
 			for (j = 0; j < a.length ; j++) {
 				if (b[i] == a[j]) {
 					k = 0;
@@ -90,14 +94,15 @@ public class Itemsets {
 		for (i = 0; i < a.length && a[i]!= 0; i++) {
 			if (loss[i] == 0) {
 				lose = lose + a[i] + ",";
+                                check++;
 			}
 		}
 		lose = lose.substring(0, lose.length() - 1) + ")";
 		if (k == 0) {
 			double Lol = (double) a1 / b1;
-			if (Lol > minConf) {
-                            
-				System.out.printf("%s ==> %s :	%.2f%c \n", win, lose, Lol * 100, 37);
+			if (Lol >= minConf && Lol<=1 && check<=a.length) {
+                                cantReglas++;
+				System.out.printf(cantReglas+" %s ==> %s :	%.2f%c \n", win, lose, Lol * 100, 37);
 				return 1;
 			}
 		}
