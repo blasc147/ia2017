@@ -60,7 +60,7 @@ public class Itemsets {
 			}
 			poop = null;
 		}
-		System.out.println("\nReglas de Asociacion: con una confianza minima de =" + minConf * 100 + "%");
+		System.out.println("\nReglas de Asociacion partir de F"+(a-1)+": con una confianza minima de =" + minConf * 100 + "%");
 		for (i = k; i < b; i++) {
 			for (j = 0; j < k; j++) {
 				m += imprimirRegla(f[i], f[j], sup[i], sup[j], minConf);

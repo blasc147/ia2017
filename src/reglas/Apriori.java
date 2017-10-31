@@ -115,20 +115,20 @@ public class Apriori {
     {        
         // dataset
         if (args.length!=0) transaFile = args[0];
-        else transaFile = "chess.dat"; // default
+        else transaFile = "guia.dat"; // default
 
     	// minSup
     	if (args.length>=2) minSup=(Double.valueOf(args[1]).doubleValue());    	
-    	else minSup = .1;// by default
+    	else minSup = .3;// by default
     	if (minSup>1 || minSup<0) throw new Exception("minSup: valor incorrecto");
 	
 	// minCong
 	if (args.length >= 3) minConf = (Double.valueOf(args[2]).doubleValue());
-	else minConf = .2999;
+	else minConf = .7;
 	if (minConf > 1 || minConf < 0) throw new Exception("minConf: valor incorrecto");
     	
         //limite de itemsets
-        minItemsets = 3;
+        minItemsets = 4;
     	
     	// calculamos del dataset el nro de items y de transacciones
     	numItems = 0;
@@ -248,7 +248,7 @@ public class Apriori {
 	    {
 	    	
 	        int parsedVal = Integer.parseInt(stFile.nextToken());
-			trans[parsedVal]=true; //si no es 0, poner en verdadero
+                trans[parsedVal]=true; //si no es 0, poner en verdadero
 	    }
     }
 
