@@ -26,6 +26,7 @@ import reglasStrings.ItemsetsString;
 public class AprioriConStrings {
     public static void main(String[] args) throws Exception {
         AprioriConStrings ap = new AprioriConStrings(args);
+        AprioriConStrings ap2 = new AprioriConStrings(args);
     }
 
     /** itemset */
@@ -45,11 +46,12 @@ public class AprioriConStrings {
     /** minimo de itemsets a calcular */
     private static double minItemsets;
     /** genero los Fk */
-    private static List < String > tupples = new ArrayList < String > ();
+    private List < String > tupples;
     
-    private static List < ItemsetsString > efes = new ArrayList <> ();
+    private List < ItemsetsString > efes ;
     
-    static int cont=1;
+    
+    static int cont=0;
   
 
     /** generar apriori itemsets desde un dataser
@@ -72,6 +74,8 @@ public class AprioriConStrings {
         
         int itemsetNumber=1; //indice de F
         int nbFrequentSets=0;
+        tupples = new ArrayList <  > ();
+        efes = new ArrayList <> ();
         
         while (candidatos.size()>0 && itemsetNumber<=minItemsets)
         {
@@ -100,8 +104,10 @@ public class AprioriConStrings {
             ItemsetsString itemset = efes.get(i);
             itemset.GenerarRegla(minConf);
         }
-        System.out.println("Cantidad de reglas: "+ItemsetsString.cantReglas);
+        ItemsetsString.cantReglas=0;
+        System.out.println("Cantidad de reglas: "+cont);
         System.out.println("Tiempo de ejecucion: "+((double)(end-start)/1000) + " segundos.");
+        
     }
 
     /** entra el item frecuante y su soporte, se arma una tupla para luego generar las reglas con eso  */
@@ -135,11 +141,11 @@ public class AprioriConStrings {
 	
 	// minCong
 	if (args.length >= 3) minConf = (Double.valueOf(args[2]).doubleValue());
-	else minConf = .8;
+	else minConf = .7;
 	if (minConf > 1 || minConf < 0) throw new Exception("minConf: valor incorrecto");
     	
         //limite de itemsets
-        minItemsets = 3;
+        minItemsets = 4;
     	
     	// calculamos del dataset el nro de items y de transacciones
     	numItems = 0;

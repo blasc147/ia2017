@@ -49,6 +49,7 @@ public class ItemsetsString {
 			String[] poop = newb.substring(1, newb.length() - 1).split(", ");
 			for (j = 0; j < poop.length - 1; j++) {
 				f[i][j] = poop[j];
+                               
                                 //hola.add(Integer.parseInt(poop[j]));
                                 
 			}
