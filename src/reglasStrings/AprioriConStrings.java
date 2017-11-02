@@ -24,10 +24,6 @@ import reglasStrings.ItemsetsString;
  * @author Blas
  */
 public class AprioriConStrings {
-    public static void main(String[] args) throws Exception {
-        AprioriConStrings ap = new AprioriConStrings(args);
-        AprioriConStrings ap2 = new AprioriConStrings(args);
-    }
 
     /** itemset */
     private List<String[]> itemsets ;
@@ -46,26 +42,62 @@ public class AprioriConStrings {
     /** minimo de itemsets a calcular */
     private static double minItemsets;
     /** genero los Fk */
-    private List < String > tupples;
-    
-    private List < ItemsetsString > efes ;
-    
-    
+    private List < String > tupples;    
+    private List < ItemsetsString > efes;     
     static int cont=0;
-  
-
+    
     /** generar apriori itemsets desde un dataser
      * 
      * @param args parametros configuracion: args[0] nombre del data, args[1] el minSup (e.g. 0.8 para 80%)
      */
-    public  AprioriConStrings(String[] args) throws Exception
-    {
-        datosConfiguracion(args);
-        ejecutar();
+    
+//    public  AprioriConStrings(String[] args) throws Exception{
+//        datosConfiguracion(args);
+//        ejecutar();
+//    }
+//	
+//	public static void main(String[] args) throws Exception {
+//		AprioriConStrings ap = new AprioriConStrings(args);
+//        AprioriConStrings ap2 = new AprioriConStrings(args);
+//    }
+//	
+    /** datos entrada: numItems, numTransactions, and sets minSup */
+    void datosConfiguracion() throws Exception{        
+    	
+    	transaFile = Ventana.getFile().getAbsolutePath(); // transaFile = "chess.dat";
+
+     	// minSup
+     	minSup = Double.parseDouble(Ventana.getTfMinSup().getText()); //minSup = .1; by default
+     	if (minSup>1 || minSup<0) throw new Exception("minSup: valor incorrecto");
+ 	
+     	// minConf
+     	minConf = Double.parseDouble(Ventana.getTfMinConf().getText()); //minConf = .2999;
+     	if (minConf > 1 || minConf < 0) throw new Exception("minConf: valor incorrecto");
+     	
+     	//tamaño limite de itemsets
+     	minItemsets = Double.parseDouble(Ventana.getTfLimiteItemsets().getText());//minItemsets = 2;
+    	
+    	// calculamos del dataset el nro de items y de transacciones
+    	numItems = 0;
+    	numTransactions=0;
+    	BufferedReader data_in = new BufferedReader(new FileReader(transaFile));
+    	while (data_in.ready()) {    		
+    		String line=data_in.readLine();
+                
+    		if (line.matches("\\s*")) continue; // be friendly con lineas vacias
+    		numTransactions++;
+    		StringTokenizer t = new StringTokenizer(line," ");
+    		while (t.hasMoreTokens()) {
+                        String st= t.nextToken();                        
+                        itemsetst.add(st);
+    		}    		
+    	}  
+        numItems= itemsetst.size();    	
+        outputConfig();
     }
 
     /** ejecucion del programa */
-    private void ejecutar() throws Exception {
+    void ejecutar() throws Exception {
         //tiempo
         long start = System.currentTimeMillis();
 
@@ -125,48 +157,6 @@ public class AprioriConStrings {
 
     /** outputs a message in Sys.err if not used as library */
     private void log(String message) {
-    }
-
-    /** datos entrada: numItems, numTransactions, and sets minSup */
-    private void datosConfiguracion(String[] args) throws Exception
-    {        
-        // dataset
-        if (args.length!=0) transaFile = args[0];
-        else transaFile = "prueba.dat"; // default
-
-    	// minSup
-    	if (args.length>=2) minSup=(Double.valueOf(args[1]).doubleValue());    	
-    	else minSup = .3;// by default
-    	if (minSup>1 || minSup<0) throw new Exception("minSup: valor incorrecto");
-	
-	// minCong
-	if (args.length >= 3) minConf = (Double.valueOf(args[2]).doubleValue());
-	else minConf = .7;
-	if (minConf > 1 || minConf < 0) throw new Exception("minConf: valor incorrecto");
-    	
-        //limite de itemsets
-        minItemsets = 4;
-    	
-    	// calculamos del dataset el nro de items y de transacciones
-    	numItems = 0;
-    	numTransactions=0;
-    	BufferedReader data_in = new BufferedReader(new FileReader(transaFile));
-    	while (data_in.ready()) {    		
-    		String line=data_in.readLine();
-                
-    		if (line.matches("\\s*")) continue; // be friendly con lineas vacias
-    		numTransactions++;
-    		StringTokenizer t = new StringTokenizer(line," ");
-    		while (t.hasMoreTokens()) {
-                        String st= t.nextToken();
-                        
-                        itemsetst.add(st);
-    		}    		
-    	}  
-        numItems= itemsetst.size();
-    	
-        outputConfig();
-
     }
 
    /** info de la corrida
