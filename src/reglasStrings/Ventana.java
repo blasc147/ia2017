@@ -25,6 +25,7 @@ public class Ventana extends JFrame implements ActionListener{
 	private static JTextArea textArea1;
 	private JScrollPane scrollpane1;
     private JButton openButton;
+    private JLabel lblArchivoSubido;
     private JButton btnEjecutar;
     private JFileChooser fc;
     private static File file;
@@ -102,6 +103,10 @@ public class Ventana extends JFrame implements ActionListener{
 		btnEjecutar.setBounds(172, 166, 89, 23);
 	    btnEjecutar.addActionListener(this);
 		contentPane.add(btnEjecutar);
+		
+		lblArchivoSubido = new JLabel("");
+		lblArchivoSubido.setBounds(280, 117, 169, 14);
+		contentPane.add(lblArchivoSubido);
 	}
 	
 	
@@ -113,7 +118,8 @@ public class Ventana extends JFrame implements ActionListener{
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                file = fc.getSelectedFile();               
                //This is where a real application would open the file.
-               textArea1.append("Seleccionado el archivo " + file.getName() + "." + newline);
+               //textArea1.append("Seleccionado el archivo " + file.getName() + "." + newline);
+               lblArchivoSubido.setText(file.getName());
             } else {
             	textArea1.append("Cancelada la seleccion de archivo." + newline);
             }
@@ -178,5 +184,4 @@ public class Ventana extends JFrame implements ActionListener{
 	public static void setFile(File aFile) {
 		file = aFile;
 	}
-
 }
