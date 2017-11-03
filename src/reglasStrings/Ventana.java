@@ -50,7 +50,7 @@ public class Ventana extends JFrame implements ActionListener{
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		fc = new JFileChooser();
+		fc = new JFileChooser("G:\\eclipse-workspace\\ia2017-master");
 		
         openButton = new JButton("Seleccionar archivo");
         openButton.setBounds(120, 113, 150, 23);

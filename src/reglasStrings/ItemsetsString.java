@@ -61,7 +61,7 @@ public class ItemsetsString {
 			}
 			poop = null;
 		}
-		System.out.println("\nReglas de Asociacion partir de F"+(a-1)+": con una confianza minima de =" + minConf * 100 + "%");
+		System.out.println("\nReglas de Asociacion partir de F"+(a-1)+": con una confianza minima de " + minConf * 100 + "%");
 		for (i = k; i < b; i++) {
 			for (j = 0; j < k; j++) {
 				m += imprimirRegla(f[i], f[j], sup[i], sup[j], minConf);
@@ -102,7 +102,7 @@ public class ItemsetsString {
 		if (k == 0) {
 			double Lol = (double) a1 / b1;
 			if (Lol >= minConf && Lol<=1 && check<=a.length) {
-                                cantReglas++;
+				cantReglas++;
 				System.out.printf(cantReglas+" %s ==> %s :	%.2f%c \n", win, lose, Lol * 100, 37);
 				return 1;
 			}

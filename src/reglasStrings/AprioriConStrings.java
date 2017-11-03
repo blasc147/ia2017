@@ -27,7 +27,7 @@ public class AprioriConStrings {
 
     /** itemset */
     private List<String[]> itemsets ;
-    public static TreeSet<String> itemsetst= new TreeSet < String > () ;
+    public static TreeSet<String> itemsetst= new TreeSet < String > ();
     private List<String[]> candidatos;
     /** nombre del archivo .dat */
     private String transaFile; 
@@ -117,7 +117,7 @@ public class AprioriConStrings {
             if(candidatos.size()!=0)
             {
                 nbFrequentSets+=candidatos.size();
-                log("Found "+candidatos.size()+" frequent itemsets of size " + itemsetNumber + " (with support "+(minSup*100)+"%)");;
+                System.out.println("Se encontraron "+candidatos.size()+" itemsets frecuentes de tamaño " + itemsetNumber + " (con soporte mayor al "+(minSup*100)+"%).");;
                 crearItemsetsApartirdeAteriores();
             }
 
@@ -126,11 +126,11 @@ public class AprioriConStrings {
 
         //display the execution time
         long end = System.currentTimeMillis();
-        log("Tiempo de ejecucion: "+((double)(end-start)/1000) + " segundos.");
-        log("Encontrados "+nbFrequentSets+ " itemset frecuentes "+(minSup*100)+"% (absolute "+Math.round(numTransactions*minSup)+")");
-        log("Fin Itemset frecuentes");
+//        System.out.println("Tiempo de ejecucion: "+((double)(end-start)/1000) + " segundos.");
         System.out.println("Encontrados "+nbFrequentSets+ " itemset frecuentes "+(minSup*100)+"% (absolute "+Math.round(numTransactions*minSup)+")");
-        System.out.println("Tiempo de ejecucion: "+((double)(end-start)/1000) + " segundos.");
+        System.out.println("Fin Itemset frecuentes");
+        System.out.println("Encontrados "+nbFrequentSets+ " itemset frecuentes "+(minSup*100)+"% (absolute "+Math.round(numTransactions*minSup)+")");
+//        System.out.println("Tiempo de ejecucion: "+((double)(end-start)/1000) + " segundos.");
         
         for (int i = 1; i < efes.size(); i++) {
             ItemsetsString itemset = efes.get(i);
@@ -165,7 +165,7 @@ public class AprioriConStrings {
 		//output config
 		//log("Input configuration: "+numItems+" items, "+numTransactions+" transactions, ");
 		//log("minsup = "+minSup+"%");
-                System.out.println("Datos iniciales: "+numItems+" items, "+numTransactions+" transacciones, ");
+                System.out.println("Datos iniciales: "+numItems+" items, "+numTransactions+" transacciones.");
 	}
 
 	/** candidatos de 1, 
@@ -188,7 +188,7 @@ public class AprioriConStrings {
     {
     	// en teoria, los itemsets existenetes tienen el mismo tamano
     	int currentSizeOfItemsets = candidatos.get(0).length;
-    	log("Generando itemsets de tamaño "+(currentSizeOfItemsets+1)+" a partir de "+candidatos.size()+" itemsets de tamaño "+currentSizeOfItemsets);
+    	System.out.println("Generando itemsets de tamaño "+(currentSizeOfItemsets+1)+" a partir de "+candidatos.size()+" itemsets de tamaño "+currentSizeOfItemsets);
     		
     	HashMap<String, String[]> tempCandidates = new HashMap<String, String[]>(); //candidatos temporales
     	
@@ -243,7 +243,7 @@ public class AprioriConStrings {
         
         //se muetran los itemsets generados
         candidatos = new ArrayList<String[]>(tempCandidates.values());
-    	log("Se generaron"+candidatos.size()+" candidatos de tamaño "+(currentSizeOfItemsets+1));
+        System.out.println("Se generaron "+candidatos.size()+" candidatos de tamaño "+(currentSizeOfItemsets+1));
 
     }
 
@@ -266,10 +266,7 @@ public class AprioriConStrings {
     private void generarItemsetFrecuentes() throws Exception
     {
     	
-        log("Procesando " + candidatos.size()+ " itemsets de tamaño "+candidatos.get(0).length);
-        
-        
-
+        System.out.println("Procesando " + candidatos.size()+ " itemsets de tamaño "+candidatos.get(0).length);
         List<String[]> frequentCandidates = new ArrayList<String[]>(); //aca se van a guardar los que cumplan minSup
 
         boolean match; //bandera para comprobar que el itemset esta en la transaccion
