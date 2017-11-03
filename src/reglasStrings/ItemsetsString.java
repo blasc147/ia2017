@@ -61,14 +61,20 @@ public class ItemsetsString {
 			}
 			poop = null;
 		}
-		System.out.println("\nReglas de Asociacion partir de F"+(a-1)+": con una confianza minima de " + minConf * 100 + "%");
+		
+		String aux1= "Reglas de Asociacion partir de F"+(a-1)+": con una confianza minima de " + minConf * 100 + "% \n";
+		System.out.print(aux1);
+		Ventana.setStringReglas(Ventana.getStringReglas()+aux1);
+		
 		for (i = k; i < b; i++) {
 			for (j = 0; j < k; j++) {
 				m += imprimirRegla(f[i], f[j], sup[i], sup[j], minConf);
 			}
 		}
 		if (m == 0) {
-			System.out.println("No existen reglas que superen en minimo de confianza " + minConf * 100 + "%");
+			aux1= "No existen reglas que superen en minimo de confianza " + minConf * 100 + "% \n";
+			System.out.print(aux1);
+			Ventana.setStringReglas(Ventana.getStringReglas()+aux1);
 		}
 	}
     
@@ -98,12 +104,15 @@ public class ItemsetsString {
                                 check++;
 			}
 		}
+		
 		lose = lose.substring(0, lose.length() - 1) + ")";
 		if (k == 0) {
 			double Lol = (double) a1 / b1;
 			if (Lol >= minConf && Lol<=1 && check<=a.length) {
 				cantReglas++;
-				System.out.printf(cantReglas+" %s ==> %s :	%.2f%c \n", win, lose, Lol * 100, 37);
+				String aux1 = String.format(cantReglas+" %s ==> %s :	%.2f%c \n", win, lose, Lol * 100, 37);
+				System.out.print(aux1);
+				Ventana.setStringReglas(Ventana.getStringReglas()+aux1);
 				return 1;
 			}
 		}

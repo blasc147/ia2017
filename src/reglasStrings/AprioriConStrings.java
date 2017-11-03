@@ -74,7 +74,7 @@ public class AprioriConStrings {
      	minConf = Double.parseDouble(Ventana.getTfMinConf().getText()); //minConf = .2999;
      	if (minConf > 1 || minConf < 0) throw new Exception("minConf: valor incorrecto");
      	
-     	//tama�o limite de itemsets
+     	//tamanio limite de itemsets
      	minItemsets = Double.parseDouble(Ventana.getTfLimiteItemsets().getText());//minItemsets = 2;
     	
     	// calculamos del dataset el nro de items y de transacciones
@@ -114,10 +114,11 @@ public class AprioriConStrings {
             //vamos verificando que los itemsets cumplan en minSup -- generacion de los Fk
             generarItemsetFrecuentes();
 
-            if(candidatos.size()!=0)
-            {
+            if(candidatos.size()!=0){
                 nbFrequentSets+=candidatos.size();
-                System.out.println("Se encontraron "+candidatos.size()+" itemsets frecuentes de tamaño " + itemsetNumber + " (con soporte mayor al "+(minSup*100)+"%).");;
+                String aux1 = "Se encontraron "+candidatos.size()+" itemsets frecuentes de tamaño " + itemsetNumber + " (con soporte mayor o igual al "+(minSup*100)+"%). \n";
+                System.out.print(aux1);
+                Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
                 crearItemsetsApartirdeAteriores();
             }
 
@@ -126,23 +127,37 @@ public class AprioriConStrings {
 
         //display the execution time
         long end = System.currentTimeMillis();
-//        System.out.println("Tiempo de ejecucion: "+((double)(end-start)/1000) + " segundos.");
-        System.out.println("Encontrados "+nbFrequentSets+ " itemset frecuentes "+(minSup*100)+"% (absolute "+Math.round(numTransactions*minSup)+")");
-        System.out.println("Fin Itemset frecuentes");
-        System.out.println("Encontrados "+nbFrequentSets+ " itemset frecuentes "+(minSup*100)+"% (absolute "+Math.round(numTransactions*minSup)+")");
-//        System.out.println("Tiempo de ejecucion: "+((double)(end-start)/1000) + " segundos.");
+
+        String aux1 = "Encontrados "+nbFrequentSets+ " itemset frecuentes "+(minSup*100)+"% (absolute "+Math.round(numTransactions*minSup)+") \n";
+        System.out.print(aux1);
+        Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
+        
+        aux1= "Fin Itemset frecuentes \n";
+        System.out.print(aux1);
+        Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
+        
+        aux1= "Encontrados "+nbFrequentSets+ " itemset frecuentes "+(minSup*100)+"% (absolute "+Math.round(numTransactions*minSup)+") \n";
+        System.out.print(aux1);
+        Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
         
         for (int i = 1; i < efes.size(); i++) {
             ItemsetsString itemset = efes.get(i);
             itemset.GenerarRegla(minConf);
         }
+        
+        aux1= "Cantidad de reglas: "+ItemsetsString.cantReglas+"\n";
+        System.out.print(aux1);
+        Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
+        
         ItemsetsString.cantReglas=0;
-        System.out.println("Cantidad de reglas: "+cont);
-        System.out.println("Tiempo de ejecucion: "+((double)(end-start)/1000) + " segundos.");
+        
+        aux1= "Tiempo de ejecucion: "+((double)(end-start)/1000) + " segundos.\n";
+        System.out.print(aux1);
+        Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
         
     }
 
-    /** entra el item frecuante y su soporte, se arma una tupla para luego generar las reglas con eso  */
+    /** entra el item frecuente y su soporte, se arma una tupla para luego generar las reglas con eso  */
     private void generarTuplas(String[] itemset, int support) {
     	String New, New1;
 	New = Arrays.toString(itemset);
@@ -152,7 +167,10 @@ public class AprioriConStrings {
                 //aca hay que modificar, hay que crear un objeto cuando termina para generar los H
                 //cada elemento de la tupla tiene el itemset acompañado por el soporte
 	tupples.add(New1);
-	 System.out.println(New + "  (" + ((support / (double) numTransactions)) + " " + support + ")");
+	String aux1= New + "  (" + ((support / (double) numTransactions)) + " " + support + ") \n";
+	System.out.print(aux1);
+    Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
+
     }
 
     /** outputs a message in Sys.err if not used as library */
@@ -165,7 +183,9 @@ public class AprioriConStrings {
 		//output config
 		//log("Input configuration: "+numItems+" items, "+numTransactions+" transactions, ");
 		//log("minsup = "+minSup+"%");
-                System.out.println("Datos iniciales: "+numItems+" items, "+numTransactions+" transacciones.");
+		String aux1= "Datos iniciales: "+numItems+" items, "+numTransactions+" transacciones. \n";
+		System.out.print(aux1);
+        Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
 	}
 
 	/** candidatos de 1, 
@@ -181,14 +201,16 @@ public class AprioriConStrings {
 	}
 			
     /**
-     * si m es el tamano de los itemsets actuales,
-     * generamos los candidatos de tamano m+1 a partir de los actuales
+     * si m es el tamanio de los itemsets actuales,
+     * generamos los candidatos de tamanio m+1 a partir de los actuales
      */
     private void crearItemsetsApartirdeAteriores()
     {
-    	// en teoria, los itemsets existenetes tienen el mismo tamano
+    	// en teoria, los itemsets existenetes tienen el mismo tamanio
     	int currentSizeOfItemsets = candidatos.get(0).length;
-    	System.out.println("Generando itemsets de tamaño "+(currentSizeOfItemsets+1)+" a partir de "+candidatos.size()+" itemsets de tamaño "+currentSizeOfItemsets);
+    	String aux1 = "Generando itemsets de tama�o "+(currentSizeOfItemsets+1)+" a partir de "+candidatos.size()+" itemsets de tama�o "+currentSizeOfItemsets+"\n";
+    	System.out.print(aux1);
+        Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
     		
     	HashMap<String, String[]> tempCandidates = new HashMap<String, String[]>(); //candidatos temporales
     	
@@ -243,8 +265,9 @@ public class AprioriConStrings {
         
         //se muetran los itemsets generados
         candidatos = new ArrayList<String[]>(tempCandidates.values());
-        System.out.println("Se generaron "+candidatos.size()+" candidatos de tamaño "+(currentSizeOfItemsets+1));
-
+        aux1= "Se generaron "+candidatos.size()+" candidatos de tama�o "+(currentSizeOfItemsets+1)+"\n";
+        System.out.print(aux1);
+        Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
     }
 
 
@@ -263,10 +286,12 @@ public class AprioriConStrings {
     /** analizar la frecuencia de los itemsets {@link itemsets},
      *  filtra todos los que no superan el minSupp
      */
-    private void generarItemsetFrecuentes() throws Exception
-    {
+    private void generarItemsetFrecuentes() throws Exception{
     	
-        System.out.println("Procesando " + candidatos.size()+ " itemsets de tamaño "+candidatos.get(0).length);
+        String aux1= "Procesando " + candidatos.size()+ " itemsets de tama�o "+candidatos.get(0).length+"\n";
+        System.out.print(aux1);
+        Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
+        
         List<String[]> frequentCandidates = new ArrayList<String[]>(); //aca se van a guardar los que cumplan minSup
 
         boolean match; //bandera para comprobar que el itemset esta en la transaccion
@@ -274,8 +299,7 @@ public class AprioriConStrings {
 
 		// hay que obtener el soporte de los candidatos del dataset
 		BufferedReader data_in = new BufferedReader(new InputStreamReader(new FileInputStream(transaFile)));
-
-                List<String> transas = new ArrayList<>();
+		List<String> transas = new ArrayList<>();
 		
 		// para cada transaccion
 		for (int i = 0; i < numTransactions; i++) {
@@ -296,7 +320,7 @@ public class AprioriConStrings {
 				}
 				if (match) { // si hay un match en la transaccion incrementamos
 					count[c]++;
-					//log(Arrays.toString(cand)+"el candidato se encuentra en la transaccion "+i+" ("+line+")");
+//					System.out.println(Arrays.toString(cand)+"el candidato se encuentra en la transaccion "+i+" ("+line+")");
 				}
 			}
                         transas.clear();

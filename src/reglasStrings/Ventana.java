@@ -10,6 +10,9 @@ import java.awt.Font;
 import java.io.*;
 import javax.swing.*;
 import javax.swing.filechooser.*;
+
+import com.sun.org.apache.xml.internal.utils.StringVector;
+
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeListener;
 
@@ -29,6 +32,10 @@ public class Ventana extends JFrame implements ActionListener{
     private JButton btnEjecutar;
     private JFileChooser fc;
     private static File file;
+    private static String stringReglas;
+    private JButton btnVerEstadisticas;
+    private static String stringVerEstadisticas;
+
 
 	/**
 	 * Launch the application.
@@ -44,7 +51,7 @@ public class Ventana extends JFrame implements ActionListener{
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setTitle("Algoritmo a priori");
-		setBounds(100, 100, 475, 425);
+		setBounds(50, 50, 600, 450);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -78,6 +85,10 @@ public class Ventana extends JFrame implements ActionListener{
 		lblDataset.setBounds(10, 118, 46, 14);
 		contentPane.add(lblDataset);
 		
+		lblArchivoSubido = new JLabel("");
+		lblArchivoSubido.setBounds(280, 117, 169, 14);
+		contentPane.add(lblArchivoSubido);
+		
 		tfMinSup = new JTextField();
 		tfMinSup.setBounds(120, 55, 64, 20);
 		contentPane.add(tfMinSup);
@@ -96,17 +107,19 @@ public class Ventana extends JFrame implements ActionListener{
 		textArea1=new JTextArea();
 		textArea1.setEditable(false);
         scrollpane1=new JScrollPane(textArea1);    
-        scrollpane1.setBounds(10,200,430,175);
+        scrollpane1.setBounds(10,200,565,200);
         getContentPane().add(scrollpane1);
 		
 		btnEjecutar = new JButton("Ejecutar");
-		btnEjecutar.setBounds(172, 166, 89, 23);
+		btnEjecutar.setBounds(216, 166, 89, 23);
 	    btnEjecutar.addActionListener(this);
 		contentPane.add(btnEjecutar);
 		
-		lblArchivoSubido = new JLabel("");
-		lblArchivoSubido.setBounds(280, 117, 169, 14);
-		contentPane.add(lblArchivoSubido);
+		btnVerEstadisticas = new JButton("Ver Estad\u00ECsticas");
+		//btnVerEstadisticas.setBounds(120, 166, 129, 23);
+		btnVerEstadisticas.addActionListener(this);
+		contentPane.add(btnVerEstadisticas);
+		btnVerEstadisticas.setVisible(false);
 	}
 	
 	
@@ -118,7 +131,7 @@ public class Ventana extends JFrame implements ActionListener{
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                file = fc.getSelectedFile();               
                //This is where a real application would open the file.
-               //textArea1.append("Seleccionado el archivo " + file.getName() + "." + newline);
+               textArea1.append("Seleccionado el archivo " + file.getName() + "." + newline);
                lblArchivoSubido.setText(file.getName());
             } else {
             	textArea1.append("Cancelada la seleccion de archivo." + newline);
@@ -128,9 +141,22 @@ public class Ventana extends JFrame implements ActionListener{
         
         if (e.getSource() == btnEjecutar) {
 	        try {
+	        	stringReglas= "";
+	        	stringVerEstadisticas= "";
 	        	AprioriConStrings ap = new AprioriConStrings();
 	        	ap.datosConfiguracion();
 	        	ap.ejecutar();
+	        	textArea1.setText(stringReglas);
+	    		btnEjecutar.setBounds(10, 166, 89, 23);
+	        	btnVerEstadisticas.setBounds(120, 166, 129, 23);
+	    		btnVerEstadisticas.setVisible(true);
+			} catch (Exception excep) {
+				excep.printStackTrace();}  
+		}
+        
+        if (e.getSource() == btnVerEstadisticas) {
+	        try {
+	        	textArea1.setText(stringVerEstadisticas);
 			} catch (Exception excep) {
 				excep.printStackTrace();}  
 		}
@@ -184,4 +210,20 @@ public class Ventana extends JFrame implements ActionListener{
 	public static void setFile(File aFile) {
 		file = aFile;
 	}
+	
+	public static String getStringReglas() {
+		return stringReglas;
+	}
+	
+	public static void setStringReglas(String stringReglas) {
+		Ventana.stringReglas = stringReglas;
+	}
+	public static String getStringVerEstadisticas() {
+		return stringVerEstadisticas;
+	}
+	public static void setStringVerEstadisticas(String stringVerEstadisticas) {
+		Ventana.stringVerEstadisticas = stringVerEstadisticas;
+	}
+	
+	
 }
