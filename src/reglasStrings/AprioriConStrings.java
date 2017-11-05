@@ -64,19 +64,32 @@ public class AprioriConStrings {
     /** datos entrada: numItems, numTransactions, and sets minSup */
     void datosConfiguracion() throws Exception{        
     	
+    	// directorio del dataset
     	transaFile = Ventana.getFile().getAbsolutePath(); // transaFile = "chess.dat";
 
      	// minSup
-     	minSup = Double.parseDouble(Ventana.getTfMinSup().getText()); //minSup = .1; by default
-     	if (minSup>1 || minSup<0) throw new Exception("minSup: valor incorrecto");
+     	String valor = Ventana.getTfMinSup().getText(); 
+     	if (valor == null | valor.isEmpty()) {
+     		minSup= 0.3; //valor por defecto
+     		Ventana.getTfMinSup().setText("0.3");}
+     	else {minSup = Double.parseDouble(valor);}
+     	if (minSup>1 || minSup<0) throw new Exception("minSup: Valor incorrecto.");
  	
      	// minConf
-     	minConf = Double.parseDouble(Ventana.getTfMinConf().getText()); //minConf = .2999;
-     	if (minConf > 1 || minConf < 0) throw new Exception("minConf: valor incorrecto");
+     	valor = Ventana.getTfMinConf().getText(); 
+     	if (valor == null | valor.isEmpty()) {
+     		minConf= 0.8; //valor por defecto
+     		Ventana.getTfMinConf().setText("0.8");}    
+     	else {minConf= Double.parseDouble(valor);}
+     	if (minConf > 1 || minConf < 0) throw new Exception("minConf: Valor incorrecto.");
      	
      	//tamanio limite de itemsets
-     	minItemsets = Double.parseDouble(Ventana.getTfLimiteItemsets().getText());//minItemsets = 2;
-    	
+     	valor= Ventana.getTfLimiteItemsets().getText();
+     	if (valor == null | valor.isEmpty()) {
+     		minItemsets=3; //valor por defecto
+     		Ventana.getTfLimiteItemsets().setText("3");}
+     	else {minItemsets = Double.parseDouble(valor);}
+     	
     	// calculamos del dataset el nro de items y de transacciones
     	numItems = 0;
     	numTransactions=0;
@@ -116,7 +129,7 @@ public class AprioriConStrings {
 
             if(candidatos.size()!=0){
                 nbFrequentSets+=candidatos.size();
-                String aux1 = "Se encontraron "+candidatos.size()+" itemsets frecuentes de tamaÃ±o " + itemsetNumber + " (con soporte mayor o igual al "+(minSup*100)+"%). \n";
+                String aux1 = "Se encontraron "+candidatos.size()+" itemsets frecuentes de tamanio " + itemsetNumber + " (con soporte mayor o igual al "+(minSup*100)+"%). \n";
                 System.out.print(aux1);
                 Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
                 crearItemsetsApartirdeAteriores();
@@ -208,7 +221,7 @@ public class AprioriConStrings {
     {
     	// en teoria, los itemsets existenetes tienen el mismo tamanio
     	int currentSizeOfItemsets = candidatos.get(0).length;
-    	String aux1 = "Generando itemsets de tamaño "+(currentSizeOfItemsets+1)+" a partir de "+candidatos.size()+" itemsets de tamaño "+currentSizeOfItemsets+"\n";
+    	String aux1 = "Generando itemsets de tamanio "+(currentSizeOfItemsets+1)+" a partir de "+candidatos.size()+" itemsets de tamanio "+currentSizeOfItemsets+"\n";
     	System.out.print(aux1);
         Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
     		
@@ -265,7 +278,7 @@ public class AprioriConStrings {
         
         //se muetran los itemsets generados
         candidatos = new ArrayList<String[]>(tempCandidates.values());
-        aux1= "Se generaron "+candidatos.size()+" candidatos de tamaño "+(currentSizeOfItemsets+1)+"\n";
+        aux1= "Se generaron "+candidatos.size()+" candidatos de tamanio "+(currentSizeOfItemsets+1)+"\n";
         System.out.print(aux1);
         Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
     }
@@ -288,7 +301,7 @@ public class AprioriConStrings {
      */
     private void generarItemsetFrecuentes() throws Exception{
     	
-        String aux1= "Procesando " + candidatos.size()+ " itemsets de tamaño "+candidatos.get(0).length+"\n";
+        String aux1= "Procesando " + candidatos.size()+ " itemsets de tamanio "+candidatos.get(0).length+"\n";
         System.out.print(aux1);
         Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
         
