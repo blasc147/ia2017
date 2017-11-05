@@ -131,7 +131,7 @@ public class AprioriConStrings {
                 nbFrequentSets+=candidatos.size();
                 String aux1 = "Se encontraron "+candidatos.size()+" itemsets frecuentes de tamanio " + itemsetNumber + " (con soporte mayor o igual al "+(minSup*100)+"%). \n";
                 System.out.print(aux1);
-                Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
+                Ventana.setStringVerItemsetsFrecuentes(Ventana.getStringVerItemsetsFrecuentes()+aux1);
                 crearItemsetsApartirdeAteriores();
             }
 
@@ -141,24 +141,21 @@ public class AprioriConStrings {
         //display the execution time
         long end = System.currentTimeMillis();
 
-        String aux1 = "Encontrados "+nbFrequentSets+ " itemset frecuentes "+(minSup*100)+"% (absolute "+Math.round(numTransactions*minSup)+") \n";
+        String aux1 = "Encontrados "+nbFrequentSets+ " itemsets frecuentes con soporte mayor o igual a "+(minSup*100)+"% (absolute "+Math.round(numTransactions*minSup)+") \n";
         System.out.print(aux1);
+        Ventana.setStringVerItemsetsFrecuentes(Ventana.getStringVerItemsetsFrecuentes()+aux1);
         Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
         
-        aux1= "Fin Itemset frecuentes \n";
-        System.out.print(aux1);
-        Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
-        
-        aux1= "Encontrados "+nbFrequentSets+ " itemset frecuentes "+(minSup*100)+"% (absolute "+Math.round(numTransactions*minSup)+") \n";
-        System.out.print(aux1);
-        Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
+//        aux1= "Fin Itemset frecuentes \n";
+//        System.out.print(aux1);
+//        Ventana.setStringVerItemsetsFrecuentes(Ventana.getStringVerItemsetsFrecuentes()+aux1);
         
         for (int i = 1; i < efes.size(); i++) {
             ItemsetsString itemset = efes.get(i);
             itemset.GenerarRegla(minConf);
         }
         
-        aux1= "Cantidad de reglas: "+ItemsetsString.cantReglas+"\n";
+        aux1= "Cantidad de reglas generadas: "+ItemsetsString.cantReglas+"\n";
         System.out.print(aux1);
         Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
         
@@ -182,7 +179,7 @@ public class AprioriConStrings {
 	tupples.add(New1);
 	String aux1= New + "  (" + ((support / (double) numTransactions)) + " " + support + ") \n";
 	System.out.print(aux1);
-    Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
+	Ventana.setStringVerItemsetsFrecuentes(Ventana.getStringVerItemsetsFrecuentes()+aux1);
 
     }
 
@@ -223,7 +220,7 @@ public class AprioriConStrings {
     	int currentSizeOfItemsets = candidatos.get(0).length;
     	String aux1 = "Generando itemsets de tamanio "+(currentSizeOfItemsets+1)+" a partir de "+candidatos.size()+" itemsets de tamanio "+currentSizeOfItemsets+"\n";
     	System.out.print(aux1);
-        Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
+    	Ventana.setStringVerItemsetsFrecuentes(Ventana.getStringVerItemsetsFrecuentes()+aux1);
     		
     	HashMap<String, String[]> tempCandidates = new HashMap<String, String[]>(); //candidatos temporales
     	
@@ -280,7 +277,7 @@ public class AprioriConStrings {
         candidatos = new ArrayList<String[]>(tempCandidates.values());
         aux1= "Se generaron "+candidatos.size()+" candidatos de tamanio "+(currentSizeOfItemsets+1)+"\n";
         System.out.print(aux1);
-        Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
+        Ventana.setStringVerItemsetsFrecuentes(Ventana.getStringVerItemsetsFrecuentes()+aux1);
     }
 
 
@@ -303,7 +300,7 @@ public class AprioriConStrings {
     	
         String aux1= "Procesando " + candidatos.size()+ " itemsets de tamanio "+candidatos.get(0).length+"\n";
         System.out.print(aux1);
-        Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
+        Ventana.setStringVerItemsetsFrecuentes(Ventana.getStringVerItemsetsFrecuentes()+aux1);
         
         List<String[]> frequentCandidates = new ArrayList<String[]>(); //aca se van a guardar los que cumplan minSup
 
