@@ -46,6 +46,7 @@ public class Ventana extends JFrame implements ActionListener{
 	public static void main(String[] args) {
 					Ventana ventana1 = new Ventana();
 					ventana1.setVisible(true);
+			        ventana1.setResizable(false);
 	}
 	/**
 	 * Create the frame.
@@ -69,7 +70,7 @@ public class Ventana extends JFrame implements ActionListener{
                 
 		JLabel lblAlgoritmoAPriori = new JLabel("Reglas de asociaciòn");
 		lblAlgoritmoAPriori.setFont(new Font("Tw Cen MT Condensed Extra Bold", Font.BOLD, 30));
-		lblAlgoritmoAPriori.setBounds(98, 11, 264, 33);
+		lblAlgoritmoAPriori.setBounds(164, 11, 285, 33);
 		contentPane.add(lblAlgoritmoAPriori);
 		
 		JLabel lblMinSup = new JLabel("Soporte minimo");
@@ -110,7 +111,7 @@ public class Ventana extends JFrame implements ActionListener{
 		textArea1=new JTextArea();
 		textArea1.setEditable(false);
         scrollpane1=new JScrollPane(textArea1);    
-        scrollpane1.setBounds(10,200,565,450);
+        scrollpane1.setBounds(10,200,575,460);
         getContentPane().add(scrollpane1);
 		
 		btnEjecutar = new JButton("Ejecutar");
