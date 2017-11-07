@@ -52,12 +52,12 @@ public class Ventana extends JFrame implements ActionListener{
 	 */
 	public Ventana() {
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setTitle("Algoritmo a priori");
-		setBounds(50, 50, 600, 450);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setTitle("Reglas de asociaciòn");
+		this.setBounds(50, 50, 600, 700);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
+		this.setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		fc = new JFileChooser("G:\\eclipse-workspace\\ia2017-master");
@@ -67,7 +67,7 @@ public class Ventana extends JFrame implements ActionListener{
         openButton.addActionListener(this);
         contentPane.add(openButton);   
                 
-		JLabel lblAlgoritmoAPriori = new JLabel("Algoritmo a Priori");
+		JLabel lblAlgoritmoAPriori = new JLabel("Reglas de asociaciòn");
 		lblAlgoritmoAPriori.setFont(new Font("Tw Cen MT Condensed Extra Bold", Font.BOLD, 30));
 		lblAlgoritmoAPriori.setBounds(98, 11, 264, 33);
 		contentPane.add(lblAlgoritmoAPriori);
@@ -80,13 +80,13 @@ public class Ventana extends JFrame implements ActionListener{
 		lblMinConf.setBounds(10, 88, 114, 14);
 		contentPane.add(lblMinConf);
 		
-		lblLimiteItemsets = new JLabel("Tama\u00F1o màximo de itemsets");
-		lblLimiteItemsets.setBounds(213, 55, 170, 23);
-		contentPane.add(lblLimiteItemsets);
-		
 		JLabel lblDataset = new JLabel("Dataset");
 		lblDataset.setBounds(10, 118, 46, 14);
 		contentPane.add(lblDataset);
+		
+		lblLimiteItemsets = new JLabel("Tama\u00F1o màximo de itemsets");
+		lblLimiteItemsets.setBounds(213, 55, 170, 23);
+		contentPane.add(lblLimiteItemsets);
 		
 		lblArchivoSubido = new JLabel("");
 		lblArchivoSubido.setBounds(280, 117, 169, 14);
@@ -110,7 +110,7 @@ public class Ventana extends JFrame implements ActionListener{
 		textArea1=new JTextArea();
 		textArea1.setEditable(false);
         scrollpane1=new JScrollPane(textArea1);    
-        scrollpane1.setBounds(10,200,565,200);
+        scrollpane1.setBounds(10,200,565,450);
         getContentPane().add(scrollpane1);
 		
 		btnEjecutar = new JButton("Ejecutar");
@@ -194,9 +194,7 @@ public class Ventana extends JFrame implements ActionListener{
 				excep.printStackTrace();
 			}  
 		}
-        
-	}
-	
+    }	
 
 	public static JTextArea getTextArea1() {
 		return textArea1;
