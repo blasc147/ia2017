@@ -32,29 +32,33 @@ public class Ventana extends JFrame implements ActionListener{
     private JButton btnEjecutar;
     private JFileChooser fc;
     private static File file;
+    private JButton btnVerReglas;
     private static String stringReglas;
     private JButton btnVerEstadisticas;
     private static String stringVerEstadisticas;
+    private JButton btnVerItemsetsFrecuentes;
+    private static String stringVerItemsetsFrecuentes;
 
-
+    
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 					Ventana ventana1 = new Ventana();
 					ventana1.setVisible(true);
+			        ventana1.setResizable(false);
 	}
 	/**
 	 * Create the frame.
 	 */
 	public Ventana() {
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setTitle("Algoritmo a priori");
-		setBounds(50, 50, 600, 450);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setTitle("Reglas de asociaciòn");
+		this.setBounds(50, 50, 600, 700);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
+		this.setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		fc = new JFileChooser("G:\\eclipse-workspace\\ia2017-master");
@@ -64,9 +68,9 @@ public class Ventana extends JFrame implements ActionListener{
         openButton.addActionListener(this);
         contentPane.add(openButton);   
                 
-		JLabel lblAlgoritmoAPriori = new JLabel("Algoritmo a Priori");
+		JLabel lblAlgoritmoAPriori = new JLabel("Reglas de asociaciòn");
 		lblAlgoritmoAPriori.setFont(new Font("Tw Cen MT Condensed Extra Bold", Font.BOLD, 30));
-		lblAlgoritmoAPriori.setBounds(98, 11, 264, 33);
+		lblAlgoritmoAPriori.setBounds(164, 11, 285, 33);
 		contentPane.add(lblAlgoritmoAPriori);
 		
 		JLabel lblMinSup = new JLabel("Soporte minimo");
@@ -77,13 +81,13 @@ public class Ventana extends JFrame implements ActionListener{
 		lblMinConf.setBounds(10, 88, 114, 14);
 		contentPane.add(lblMinConf);
 		
-		lblLimiteItemsets = new JLabel("Tama\u00F1o màximo de itemsets");
-		lblLimiteItemsets.setBounds(213, 55, 170, 23);
-		contentPane.add(lblLimiteItemsets);
-		
 		JLabel lblDataset = new JLabel("Dataset");
 		lblDataset.setBounds(10, 118, 46, 14);
 		contentPane.add(lblDataset);
+		
+		lblLimiteItemsets = new JLabel("Tama\u00F1o màximo de itemsets");
+		lblLimiteItemsets.setBounds(213, 55, 170, 23);
+		contentPane.add(lblLimiteItemsets);
 		
 		lblArchivoSubido = new JLabel("");
 		lblArchivoSubido.setBounds(280, 117, 169, 14);
@@ -107,7 +111,7 @@ public class Ventana extends JFrame implements ActionListener{
 		textArea1=new JTextArea();
 		textArea1.setEditable(false);
         scrollpane1=new JScrollPane(textArea1);    
-        scrollpane1.setBounds(10,200,565,200);
+        scrollpane1.setBounds(10,200,575,460);
         getContentPane().add(scrollpane1);
 		
 		btnEjecutar = new JButton("Ejecutar");
@@ -116,10 +120,19 @@ public class Ventana extends JFrame implements ActionListener{
 		contentPane.add(btnEjecutar);
 		
 		btnVerEstadisticas = new JButton("Ver Estad\u00ECsticas");
-		//btnVerEstadisticas.setBounds(120, 166, 129, 23);
 		btnVerEstadisticas.addActionListener(this);
 		contentPane.add(btnVerEstadisticas);
 		btnVerEstadisticas.setVisible(false);
+		
+		btnVerReglas = new JButton("Ver Reglas");
+		btnVerReglas.addActionListener(this);
+		contentPane.add(btnVerReglas);
+		btnVerReglas.setVisible(false);
+		
+		btnVerItemsetsFrecuentes = new JButton("Ver Itemsets Frecuentes");
+		btnVerItemsetsFrecuentes.addActionListener(this);
+		contentPane.add(btnVerItemsetsFrecuentes);
+		btnVerItemsetsFrecuentes.setVisible(false);
 	}
 	
 	
@@ -143,13 +156,18 @@ public class Ventana extends JFrame implements ActionListener{
 	        try {
 	        	stringReglas= "";
 	        	stringVerEstadisticas= "";
+	        	stringVerItemsetsFrecuentes= "";
 	        	AprioriConStrings ap = new AprioriConStrings();
 	        	ap.datosConfiguracion();
 	        	ap.ejecutar();
-	        	textArea1.setText(stringReglas);
-	    		btnEjecutar.setBounds(10, 166, 89, 23);
-	        	btnVerEstadisticas.setBounds(120, 166, 129, 23);
+	        	textArea1.setText(stringVerEstadisticas);
+	    		btnEjecutar.setBounds(10, 166, 90, 23);
+	        	btnVerEstadisticas.setBounds(120, 166, 130, 23);
 	    		btnVerEstadisticas.setVisible(true);
+	    		btnVerReglas.setBounds(270, 166, 100, 23);
+	    		btnVerReglas.setVisible(true);
+	    		btnVerItemsetsFrecuentes.setBounds(390, 166, 180, 23);
+	    		btnVerItemsetsFrecuentes.setVisible(true);
 			} catch (Exception excep) {
 				excep.printStackTrace();}  
 		}
@@ -158,63 +176,60 @@ public class Ventana extends JFrame implements ActionListener{
 	        try {
 	        	textArea1.setText(stringVerEstadisticas);
 			} catch (Exception excep) {
-				excep.printStackTrace();}  
+				excep.printStackTrace();
+			}  
 		}
         
-	}
-	
+        if (e.getSource() == btnVerReglas) {
+	        try {
+	        	textArea1.setText(stringReglas);
+			} catch (Exception excep) {
+				excep.printStackTrace();
+			}  
+		}
+        
+        if (e.getSource() == btnVerItemsetsFrecuentes) {
+	        try {
+	        	textArea1.setText(stringVerItemsetsFrecuentes);
+			} catch (Exception excep) {
+				excep.printStackTrace();
+			}  
+		}
+    }	
 
 	public static JTextArea getTextArea1() {
 		return textArea1;
 	}
-
-
 	public static void setTextArea1(JTextArea aTextArea1) {
-		textArea1 = aTextArea1;
+		Ventana.textArea1 = aTextArea1;
 	}
-
-
 	public static JTextField getTfMinSup() {
 		return tfMinSup;
 	}
-
-
 	public static void setTfMinSup(JTextField atfMinSup) {
-		tfMinSup = atfMinSup;
+		Ventana.tfMinSup = atfMinSup;
 	}
-
-
 	public static JTextField getTfMinConf() {
 		return tfMinConf;
 	}
-
-
 	public static void setTfMinConf(JTextField atfMinConf) {
-		tfMinConf = atfMinConf;
+		Ventana.tfMinConf = atfMinConf;
 	}
-
-
 	public static JTextField getTfLimiteItemsets() {
 		return tfLimiteItemsets;
 	}
-
-
 	public static void setTfLimiteItemsets(JTextField atfLimiteDeItemsets) {
-		tfLimiteItemsets = atfLimiteDeItemsets;
+		Ventana.tfLimiteItemsets = atfLimiteDeItemsets;
 	}
-
 	public static File getFile() {
 		return file;
 	}
-
 	public static void setFile(File aFile) {
-		file = aFile;
-	}
-	
+		Ventana.file = aFile;
+	}	
 	public static String getStringReglas() {
 		return stringReglas;
-	}
-	
+	}	
 	public static void setStringReglas(String stringReglas) {
 		Ventana.stringReglas = stringReglas;
 	}
@@ -224,6 +239,10 @@ public class Ventana extends JFrame implements ActionListener{
 	public static void setStringVerEstadisticas(String stringVerEstadisticas) {
 		Ventana.stringVerEstadisticas = stringVerEstadisticas;
 	}
-	
-	
+	public static String getStringVerItemsetsFrecuentes() {
+		return stringVerItemsetsFrecuentes;
+	}
+	public static void setStringVerItemsetsFrecuentes(String stringVerItemsetsFrecuentes) {
+		Ventana.stringVerItemsetsFrecuentes = stringVerItemsetsFrecuentes;
+	}	
 }
