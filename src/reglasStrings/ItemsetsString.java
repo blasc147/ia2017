@@ -110,7 +110,7 @@ public class ItemsetsString {
 			double Lol = (double) a1 / b1;
 			if (Lol >= minConf && Lol<=1 && check<=a.length) {
 				cantReglas++;
-				String aux1 = String.format(cantReglas+" %s ==> %s :	%.2f%c \n", win, lose, Lol * 100, 37);
+				String aux1 = String.format(cantReglas+" - "+" %s ==> %s :	%.2f%c \n", win, lose, Lol * 100, 37);
 				System.out.print(aux1);
 				Ventana.setStringReglas(Ventana.getStringReglas()+aux1);
 				return 1;

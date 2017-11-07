@@ -120,6 +120,8 @@ public class AprioriConStrings {
                 System.out.print(aux1);
                 Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
                 crearItemsetsApartirdeAteriores();
+            }else{
+                break;
             }
 
             itemsetNumber++;
@@ -208,7 +210,7 @@ public class AprioriConStrings {
     {
     	// en teoria, los itemsets existenetes tienen el mismo tamanio
     	int currentSizeOfItemsets = candidatos.get(0).length;
-    	String aux1 = "Generando itemsets de tamaño "+(currentSizeOfItemsets+1)+" a partir de "+candidatos.size()+" itemsets de tamaño "+currentSizeOfItemsets+"\n";
+    	String aux1 = "Generando itemsets de tamaï¿½o "+(currentSizeOfItemsets+1)+" a partir de "+candidatos.size()+" itemsets de tamaï¿½o "+currentSizeOfItemsets+"\n";
     	System.out.print(aux1);
         Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
     		
@@ -265,7 +267,7 @@ public class AprioriConStrings {
         
         //se muetran los itemsets generados
         candidatos = new ArrayList<String[]>(tempCandidates.values());
-        aux1= "Se generaron "+candidatos.size()+" candidatos de tamaño "+(currentSizeOfItemsets+1)+"\n";
+        aux1= "Se generaron "+candidatos.size()+" candidatos de tamaï¿½o "+(currentSizeOfItemsets+1)+"\n";
         System.out.print(aux1);
         Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
     }
@@ -288,11 +290,11 @@ public class AprioriConStrings {
      */
     private void generarItemsetFrecuentes() throws Exception{
     	
-        String aux1= "Procesando " + candidatos.size()+ " itemsets de tamaño "+candidatos.get(0).length+"\n";
+        String aux1= "Procesando " + candidatos.size()+ " itemsets de tamaï¿½o "+candidatos.get(0).length+"\n";
         System.out.print(aux1);
         Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
         
-        List<String[]> frequentCandidates = new ArrayList<String[]>(); //aca se van a guardar los que cumplan minSup
+        List<String[]> candidatosFrecuentes = new ArrayList<String[]>(); //aca se van a guardar los que cumplan minSup
 
         boolean match; //bandera para comprobar que el itemset esta en la transaccion
         int count[] = new int[candidatos.size()]; //la cantidad de candidatos, se inicializa en 0
@@ -334,14 +336,17 @@ public class AprioriConStrings {
 			// los candidatos frecuentes
 			if ((count[i] / (double) (numTransactions)) >= minSup) {
 				generarTuplas(candidatos.get(i),count[i]);
-				frequentCandidates.add(candidatos.get(i));
+				candidatosFrecuentes.add(candidatos.get(i));
 			}
 			//else log("-- Remove candidate: "+ Arrays.toString(candidates.get(i)) + "  is: "+ ((count[i] / (double) numTransactions)));
 		}
-        List copia = new ArrayList(tupples);
-        efes.add(new ItemsetsString(copia));
+        if (!candidatosFrecuentes.isEmpty()){
+            List copia = new ArrayList(tupples);
+            efes.add(new ItemsetsString(copia));
+        }
+        
         //vamos guardando los candidatos frecuentes(generacion de los F)
-        candidatos = frequentCandidates;
+        candidatos = candidatosFrecuentes;
         
     }
 }
