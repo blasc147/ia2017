@@ -209,15 +209,9 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
 //		}
         if (e.getSource() == btnVerReglas) {
             try{
+                new MyDialog(this);
+           
             
-            int returnVal = fc.showOpenDialog(Ventana.this);
-
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-               file = fc.getSelectedFile();               
-               //This is where a real application would open the file.
-               textArea1.append("Seleccionado el archivo " + file.getName() + "." + newline);
-               lblArchivoSubido.setText(file.getName());
-            }
             }catch(Exception ex){
                 ex.printStackTrace();
             }
