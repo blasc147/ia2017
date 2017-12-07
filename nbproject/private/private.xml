@@ -3,9 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Blas/Documents/NetBeansProjects/reglas/src/reglasStrings/ItemsetsString.java</file>
-            <file>file:/C:/Users/Blas/Documents/NetBeansProjects/reglas/src/reglas/Apriori.java</file>
+            <file>file:/C:/Users/Blas/Documents/NetBeansProjects/reglas/src/reglasStrings/Ventana.java</file>
+            <file>file:/C:/Users/Blas/Documents/NetBeansProjects/reglas/src/reglasStrings/Regla.java</file>
             <file>file:/C:/Users/Blas/Documents/NetBeansProjects/reglas/src/reglasStrings/AprioriConStrings.java</file>
+            <file>file:/C:/Users/Blas/Documents/NetBeansProjects/reglas/src/reglasStrings/Itemset.java</file>
         </group>
     </open-files>
 </project-private>

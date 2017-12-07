@@ -17,7 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
-import reglasStrings.ItemsetsString;
+import reglasStrings.Itemset;
 
 /**
  *
@@ -43,7 +43,7 @@ public class AprioriConStrings {
     private static double minItemsets;
     /** genero los Fk */
     private List < String > tupples;    
-    private List < ItemsetsString > efes;     
+    private List < Itemset > efes;     
     static int cont=0;
     
     /** generar apriori itemsets desde un dataser
@@ -66,28 +66,16 @@ public class AprioriConStrings {
     	
     	// directorio del dataset
     	transaFile = Ventana.getFile().getAbsolutePath(); // transaFile = "chess.dat";
-
-     	// minSup
-     	String valor = Ventana.getTfMinSup().getText(); 
-     	if (valor == null | valor.isEmpty()) {
-     		minSup= 0.3; //valor por defecto
-     		Ventana.getTfMinSup().setText("0.3");}
-     	else {minSup = Double.parseDouble(valor);}
-     	if (minSup>1 || minSup<0) throw new Exception("minSup: Valor incorrecto.");
- 	
-     	// minConf
-     	valor = Ventana.getTfMinConf().getText(); 
-     	if (valor == null | valor.isEmpty()) {
-     		minConf= 0.8; //valor por defecto
-     		Ventana.getTfMinConf().setText("0.8");}    
-     	else {minConf= Double.parseDouble(valor);}
-     	if (minConf > 1 || minConf < 0) throw new Exception("minConf: Valor incorrecto.");
-     	
+        int aux = (int)Ventana.getSpinnerSup().getValue();
+        minSup= (double) aux/100;
+        aux = (int)Ventana.getSpinnerConf().getValue();
+        minConf= (double) aux/100;
+         
      	//tamanio limite de itemsets
-     	valor= Ventana.getTfLimiteItemsets().getText();
-     	if (valor == null | valor.isEmpty()) {
-     		minItemsets=3; //valor por defecto
-     		Ventana.getTfLimiteItemsets().setText("3");}
+     	String valor= Ventana.getTfLimiteItemsets().getText();
+     	if (valor == null | valor.isEmpty() | !(Ventana.getTfLimiteItemsets().isEnabled())) {
+     		minItemsets=9; //valor por defecto
+     	}
      	else {minItemsets = Double.parseDouble(valor);}
      	
     	// calculamos del dataset el nro de items y de transacciones
@@ -113,7 +101,7 @@ public class AprioriConStrings {
     void ejecutar() throws Exception {
         //tiempo
         long start = System.currentTimeMillis();
-
+        if(minConf>minSup){
         // generamos candidatos de 1
         crearItemsdeUno();     
         
@@ -153,20 +141,23 @@ public class AprioriConStrings {
 //        Ventana.setStringVerItemsetsFrecuentes(Ventana.getStringVerItemsetsFrecuentes()+aux1);
         
         for (int i = 1; i < efes.size(); i++) {
-            ItemsetsString itemset = efes.get(i);
+            Itemset itemset = efes.get(i);
             itemset.GenerarRegla(minConf);
         }
         
-        aux1= "Cantidad de reglas generadas: "+ItemsetsString.cantReglas+"\n";
+        aux1= "Cantidad de reglas generadas: "+Itemset.cantReglas+"\n";
         System.out.print(aux1);
         Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
         
-        ItemsetsString.cantReglas=0;
+        Itemset.cantReglas=0;
         
         aux1= "Tiempo de ejecucion: "+((double)(end-start)/1000) + " segundos.\n";
         System.out.print(aux1);
         Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
-        
+        }else{
+            String error= "Error : No se puede ingresar un minimo soporte mayor que la minima confianza";
+            Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+error);
+        }
     }
 
     /** entra el item frecuente y su soporte, se arma una tupla para luego generar las reglas con eso  */
@@ -352,7 +343,7 @@ public class AprioriConStrings {
 		}
         if (!candidatosFrecuentes.isEmpty()){
             List copia = new ArrayList(tupples);
-            efes.add(new ItemsetsString(copia));
+            efes.add(new Itemset(copia));
         }
         
         //vamos guardando los candidatos frecuentes(generacion de los F)
