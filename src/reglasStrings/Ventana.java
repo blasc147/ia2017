@@ -17,7 +17,6 @@ import com.sun.org.apache.xml.internal.utils.StringVector;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeListener;
 
-
 public class Ventana extends JFrame implements ActionListener, ChangeListener{
 
     static private final String newline = "\n";
@@ -45,16 +44,19 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
 
     
 	/**
-	 * Launch the application.
+	 * Con este método se ejecuta la aplicación.
 	 */
 	public static void main(String[] args) {
 					Ventana ventana1 = new Ventana();
 					ventana1.setVisible(true);
 			        ventana1.setResizable(false);
 	}
+	
 	/**
-	 * Create the frame.
-	 */
+	 * Con este método constructor se crea la 
+	 * instancia del objeto Ventana, 
+	 * y se le agregan cada uno de sus componentes visuales.
+	 */	
 	public Ventana() {
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -67,10 +69,10 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
 		
 		fc = new JFileChooser("G:\\eclipse-workspace\\ia2017-master");
 		
-                openButton = new JButton("Seleccionar archivo");
-                openButton.setBounds(120, 113, 150, 23);
-                openButton.addActionListener(this);
-                contentPane.add(openButton);  
+        openButton = new JButton("Seleccionar archivo");
+        openButton.setBounds(120, 113, 150, 23);
+        openButton.addActionListener(this);
+        contentPane.add(openButton);  
                 
 		JLabel lblAlgoritmoAPriori = new JLabel("Reglas de AsociaciÃ³n:Apriori");
 		lblAlgoritmoAPriori.setFont(new Font("Tw Cen MT Condensed Extra Bold", Font.BOLD, 30));
@@ -79,7 +81,7 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
 		
 		JLabel lblMinSup = new JLabel("Soporte m\u00EDnimo (%)");
  		lblMinSup.setBounds(10, 58, 127, 14);
-                contentPane.add(lblMinSup);
+        contentPane.add(lblMinSup);
 		
 		JLabel lblMinConf = new JLabel("Confianza m\u00EDnima (%)");
  		lblMinConf.setBounds(260, 58, 144, 14);
@@ -91,22 +93,12 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
 		
 		lblLimiteItemsets = new JLabel("Max. items por regla(df:3):");
 		lblLimiteItemsets.setBounds(260, 83, 170, 23);
-                lblLimiteItemsets.setEnabled(false);
+        lblLimiteItemsets.setEnabled(false);
 		contentPane.add(lblLimiteItemsets);
 		
 		lblArchivoSubido = new JLabel("");
 		lblArchivoSubido.setBounds(280, 117, 169, 14);
 		contentPane.add(lblArchivoSubido);
-		
-		//tfMinSup = new JTextField();
-		//tfMinSup.setBounds(297, 55, 89, 20);
-		//contentPane.add(tfMinSup);
-		//tfMinSup.setColumns(10);
-		
-		//tfMinConf = new JTextField();
-		//tfMinConf.setBounds(297, 85, 89, 20);
-		//contentPane.add(tfMinConf);
-		//tfMinConf.setColumns(10);
 		
 		tfLimiteItemsets = new JTextField();
 		tfLimiteItemsets.setColumns(10);
@@ -116,13 +108,13 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
 		
 		textArea1=new JTextArea();
 		textArea1.setEditable(false);
-                scrollpane1=new JScrollPane(textArea1);    
-                scrollpane1.setBounds(10,200,575,460);
-                contentPane.add(scrollpane1);
+        scrollpane1=new JScrollPane(textArea1);    
+        scrollpane1.setBounds(10,200,575,460);
+        contentPane.add(scrollpane1);
 		
 		btnEjecutar = new JButton("Ejecutar");
 		btnEjecutar.setBounds(216, 166, 89, 23);
-                btnEjecutar.addActionListener(this);
+        btnEjecutar.addActionListener(this);
 		contentPane.add(btnEjecutar);
 		
 		btnVerEstadisticas = new JButton("Ver Estad\u00ECsticas");
@@ -156,7 +148,11 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
 	}
 	
 	
-	public void actionPerformed(ActionEvent e) { //el metodo recibe el evento e para saber que boton se apreto
+	/**Este metodo recibe el evento e 
+	 * para saber que botón se apretó,
+	 * y actuar en consecuencia
+	 */
+	public void actionPerformed(ActionEvent e) {
   
         if (e.getSource() == openButton) {
             int returnVal = fc.showOpenDialog(Ventana.this);
@@ -200,17 +196,9 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
 			}  
 		}
         
-//        if (e.getSource() == btnVerReglas) {
-//	        try {
-//	        	textArea1.setText(stringReglas);
-//			} catch (Exception excep) {
-//				excep.printStackTrace();
-//			}  
-//		}
         if (e.getSource() == btnVerReglas) {
             try{
-                new VentanaReglas(this);
-           
+                new VentanaReglas(this);           
             
             }catch(Exception ex){
                 ex.printStackTrace();
@@ -224,15 +212,21 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
 			}  
 		}
     }	
-        public void stateChanged(ChangeEvent e){
-         if (checkboxLimiteItemsets.isSelected()==true) {
+    
+	/**Este método detecta, con el evento e,
+	 * cuando habilitamos y deshabilitamos
+	 * el checkbox que nos permite poner
+	 * un tamaño límite para los itemsets. 
+	 */
+	public void stateChanged(ChangeEvent e){
+		if (checkboxLimiteItemsets.isSelected()==true) {
              lblLimiteItemsets.setEnabled(true);
              tfLimiteItemsets.setEnabled(true);
-         }
-         else {
-             lblLimiteItemsets.setEnabled(false);
+        }
+        else {
+        	lblLimiteItemsets.setEnabled(false);
              tfLimiteItemsets.setEnabled(false);
-         }
+        }
      }
 
 	public static JTextArea getTextArea1() {
@@ -242,7 +236,7 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
 		Ventana.textArea1 = aTextArea1;
 	}
 	
-        public static JSpinner getSpinnerSup() {
+    public static JSpinner getSpinnerSup() {
  		return spinnerSup;
  	}
  	public static void setSpinnerSup(JSpinner spinnerSup) {
