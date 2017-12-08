@@ -96,7 +96,6 @@ public class AprioriConStrings {
     void ejecutar() throws Exception {
         //tiempo
         long start = System.currentTimeMillis();
-        if(minConf>minSup){
         // generamos candidatos de 1
         crearItemsdeUno();     
         
@@ -146,10 +145,6 @@ public class AprioriConStrings {
         aux1= "Tiempo de ejecucion: "+((double)(end-start)/1000) + " segundos.\n";
         System.out.print(aux1);
         Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
-        }else{
-            String error= "Error : No se puede ingresar un minimo soporte mayor que la minima confianza";
-            Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+error);
-        }
     }
 
     /** Genera un conjunto de tuplas: (itemset:soporte)
