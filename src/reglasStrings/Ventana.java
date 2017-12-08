@@ -209,7 +209,7 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
 //		}
         if (e.getSource() == btnVerReglas) {
             try{
-                new MyDialog(this);
+                new VentanaReglas(this);
            
             
             }catch(Exception ex){

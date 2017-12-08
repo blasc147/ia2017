@@ -12,13 +12,15 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
  * @author Blas
  */
-class MyDialog extends JDialog {
-    public MyDialog( JFrame frame ) {
+class VentanaReglas extends JDialog {
+    public VentanaReglas( JFrame frame ) {
         super( frame, "Reglas generadas", true );
         
         Vector cero = new Vector();
@@ -35,12 +37,27 @@ class MyDialog extends JDialog {
             first.add( Itemset.reglas.get(i).confianza );
             row.add( first );
         }
-        JTable table = new JTable( row, cero );
+        TableModel model = new DefaultTableModel(row, cero) {
+            public Class getColumnClass(int column) {
+              Class returnValue;
+              if ((column >= 0) && (column < getColumnCount())) {
+                returnValue = getValueAt(0, column).getClass();
+              } else {
+                returnValue = Object.class;
+              }
+              return returnValue;
+            }
+           };
+        JTable table = new JTable( model );
+        table.setAutoCreateRowSorter(true);
         Container c = getContentPane();
         c.setLayout( new FlowLayout() );
         //c.add( table );
         add(new JScrollPane(table));
         this.pack();
         this.show();
+        
     }
+    
+ 
 }

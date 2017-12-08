@@ -203,9 +203,10 @@ public class AprioriConStrings {
         }
 	}
 			
-    /**
-     * si m es el tamanio de los itemsets actuales,
-     * generamos los candidatos de tamanio m+1 a partir de los actuales
+     /**
+     * Comprueba el consumo energetico
+     * Solo mayusculas, si es una 'a' no lo detecta como una 'A'
+     * @param consumoEnergetico
      */
     private void crearItemsetsApartirdeAteriores()
     {
