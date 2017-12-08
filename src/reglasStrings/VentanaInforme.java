@@ -17,55 +17,105 @@ import javax.swing.table.TableModel;
 
 /**Este clase representa la ventana
  * emergente donde se muestran las reglas
- * de asociación de manera tabulada *
+ * de asociaciï¿½n de manera tabulada *
  * @author Grupo9-IA2017
  */
 class VentanaInforme extends JDialog {
    
 	/**
-	 * Este método constructor nos dice como
-	 * será la creación de la instancia de la 
+	 * Este mï¿½todo constructor nos dice como
+	 * serï¿½ la creaciï¿½n de la instancia de la 
 	 * ventana emergente y de su tabla, 
-	 * que es donde estáran las reglas generadas.
+	 * que es donde estï¿½ran las reglas generadas.
 	 * @param frame
 	 */
 	public VentanaInforme( JFrame frame ) {
-		super(frame, "Reglas generadas", true);        
+            super(frame, "Reglas generadas", true);        
         
-		Vector cero = new Vector();
-        cero.add( "Nro" );
-        cero.add( "Premisa" );
-        cero.add( "Consecuente" );
-        cero.add( "Confianza (%)" );
-        
-        Vector row = new Vector();
-        for (int i = 0; i < Itemset.reglas.size(); i++) {
-            Vector first = new Vector();
-            first.add(i+1);
-            first.add( Itemset.reglas.get(i).premisa );
-            first.add( Itemset.reglas.get(i).conclusion );
-            first.add( Itemset.reglas.get(i).confianza );
-            row.add( first );
-        }
-        
-        TableModel model = new DefaultTableModel(row, cero) {
-            public Class getColumnClass(int column) {
-              Class returnValue;
-              if ((column >= 0) && (column < getColumnCount())) {
-                returnValue = getValueAt(0, column).getClass();
-              } else {
-                returnValue = Object.class;
-              }
-              return returnValue;
+            Vector cero = new Vector();
+            cero.add( "Premisa" );
+            cero.add( "Consecuente" );
+            cero.add( "Confianza (%)" );
+
+            Vector row = new Vector();
+            Vector row2 = new Vector();
+            Vector row3 = new Vector();
+            Vector row4 = new Vector();
+            
+            for (int i = 0; i < Itemset.reglas.size(); i++) {
+                Vector first = new Vector();
+                first.add( Itemset.reglas.get(i).premisa );
+                first.add( Itemset.reglas.get(i).conclusion );
+                first.add( Itemset.reglas.get(i).confianza );
+                if(Itemset.reglas.get(i).confianza>=90){
+                    row.add( first );
+                }else if(Itemset.reglas.get(i).confianza>=70){
+                    row2.add( first );
+                }else if(Itemset.reglas.get(i).confianza>=50){
+                    row3.add( first );
+                }else{
+                    row4.add( first );
+                }
+               
+                
             }
-        };
+
+            TableModel model = new DefaultTableModel(row, cero) {
+                public Class getColumnClass(int column) {
+                  Class returnValue;
+                  if ((column >= 0) && (column < getColumnCount())) {
+                    returnValue = getValueAt(0, column).getClass();
+                  } else {
+                    returnValue = Object.class;
+                  }
+                  return returnValue;
+                }
+            };
+            TableModel model2 = new DefaultTableModel(row2, cero) {
+                public Class getColumnClass(int column) {
+                  Class returnValue;
+                  if ((column >= 0) && (column < getColumnCount())) {
+                    returnValue = getValueAt(0, column).getClass();
+                  } else {
+                    returnValue = Object.class;
+                  }
+                  return returnValue;
+                }
+            };
+            TableModel model3 = new DefaultTableModel(row3, cero) {
+                public Class getColumnClass(int column) {
+                  Class returnValue;
+                  if ((column >= 0) && (column < getColumnCount())) {
+                    returnValue = getValueAt(0, column).getClass();
+                  } else {
+                    returnValue = Object.class;
+                  }
+                  return returnValue;
+                }
+            };
+            TableModel model4 = new DefaultTableModel(row4, cero) {
+                public Class getColumnClass(int column) {
+                  Class returnValue;
+                  if ((column >= 0) && (column < getColumnCount())) {
+                    returnValue = getValueAt(0, column).getClass();
+                  } else {
+                    returnValue = Object.class;
+                  }
+                  return returnValue;
+                }
+            };
+
+            JTable table = new JTable( model );
+            JTable table2 = new JTable( model2 );
+            JTable table3 = new JTable( model3 );
+            JTable table4 = new JTable( model4 );
+            table.setAutoCreateRowSorter(true);
+            Container c = getContentPane();
+            c.setLayout( new FlowLayout() );
+            add(new JScrollPane(table));
+            this.pack();
+            this.show();        
+        } 
         
-        JTable table = new JTable( model );
-        table.setAutoCreateRowSorter(true);
-        Container c = getContentPane();
-        c.setLayout( new FlowLayout() );
-        add(new JScrollPane(table));
-        this.pack();
-        this.show();        
-    } 
+        
 }
