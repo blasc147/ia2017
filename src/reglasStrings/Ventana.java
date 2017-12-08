@@ -22,7 +22,9 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
     static private final String newline = "\n";
 	private JPanel contentPane;
 	private static JTextField tfMinSup;
+    private static JSpinner spinnerSup;
 	private static JTextField tfMinConf;
+    private static JSpinner spinnerConf;
 	private JLabel lblLimiteItemsets;
 	private static JTextField tfLimiteItemsets;
 	private static JTextArea textArea1;
@@ -39,9 +41,7 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
     private static String stringVerEstadisticas;
     private JButton btnVerItemsetsFrecuentes;
     private static String stringVerItemsetsFrecuentes;
-    private static JSpinner spinnerSup;
-    private static JSpinner spinnerConf;
-
+    private JButton btnVerInformeDeReglas;
     
 	/**
 	 * Con este método se ejecuta la aplicación.
@@ -61,7 +61,7 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setTitle("Association rules:Apriori");
-		this.setBounds(50, 50, 600, 700);
+		this.setBounds(50, 50, 830, 700);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		this.setContentPane(contentPane);
@@ -91,7 +91,7 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
 		lblDataset.setBounds(10, 118, 46, 14);
 		contentPane.add(lblDataset);
 		
-		lblLimiteItemsets = new JLabel("Max. items por regla(df:3):");
+		lblLimiteItemsets = new JLabel("Max. items por regla:");
 		lblLimiteItemsets.setBounds(260, 83, 170, 23);
         lblLimiteItemsets.setEnabled(false);
 		contentPane.add(lblLimiteItemsets);
@@ -120,16 +120,26 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
 		btnVerEstadisticas = new JButton("Ver Estad\u00ECsticas");
 		btnVerEstadisticas.addActionListener(this);
 		contentPane.add(btnVerEstadisticas);
-		btnVerEstadisticas.setVisible(false);
+    	btnVerEstadisticas.setBounds(120, 166, 130, 23);
+		btnVerEstadisticas.setVisible(true);
 		
-		btnVerReglas = new JButton("Ver Reglas");
+		btnVerReglas = new JButton("Ver todas las Reglas");
 		btnVerReglas.addActionListener(this);
 		contentPane.add(btnVerReglas);
-		btnVerReglas.setVisible(false);
+		btnVerReglas.setBounds(270, 166, 160, 23);
+		btnVerReglas.setVisible(true);
 		
 		btnVerItemsetsFrecuentes = new JButton("Ver Itemsets Frecuentes");
 		btnVerItemsetsFrecuentes.addActionListener(this);
+		btnVerItemsetsFrecuentes.setBounds(630, 166, 180, 23);
+		btnVerItemsetsFrecuentes.setVisible(true);
 		contentPane.add(btnVerItemsetsFrecuentes);
+		
+		btnVerInformeDeReglas = new JButton("Ver Informe de Reglas");
+		btnVerInformeDeReglas.addActionListener(this);
+		btnVerInformeDeReglas.setBounds(440, 166, 180, 23);
+		btnVerInformeDeReglas.setVisible(true);
+		contentPane.add(btnVerInformeDeReglas);
 		
 		spinnerSup = new JSpinner();
  		spinnerSup.setModel(new SpinnerNumberModel(50,1,100,1));
@@ -178,11 +188,8 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
 	        	ap.ejecutar();
 	        	textArea1.setText(stringVerEstadisticas);
 	    		btnEjecutar.setBounds(10, 166, 90, 23);
-	        	btnVerEstadisticas.setBounds(120, 166, 130, 23);
 	    		btnVerEstadisticas.setVisible(true);
-	    		btnVerReglas.setBounds(270, 166, 100, 23);
 	    		btnVerReglas.setVisible(true);
-	    		btnVerItemsetsFrecuentes.setBounds(390, 166, 180, 23);
 	    		btnVerItemsetsFrecuentes.setVisible(true);
 			} catch (Exception excep) {
 				excep.printStackTrace();}  
@@ -204,6 +211,7 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
                 ex.printStackTrace();
             }
         }
+        
         if (e.getSource() == btnVerItemsetsFrecuentes) {
 	        try {
 	        	textArea1.setText(stringVerItemsetsFrecuentes);
@@ -211,6 +219,16 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
 				excep.printStackTrace();
 			}  
 		}
+        
+        if (e.getSource() == btnVerInformeDeReglas) {
+            try{
+                new VentanaInforme(this);           
+            
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+        }
+        
     }	
     
 	/**Este método detecta, con el evento e,
