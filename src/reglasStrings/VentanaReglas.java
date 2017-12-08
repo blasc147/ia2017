@@ -27,7 +27,7 @@ class VentanaReglas extends JDialog {
          cero.add( "Nro" );
         cero.add( "Premisa" );
         cero.add( "Consecuente" );
-        cero.add( "Confianza" );
+        cero.add( "Confianza (%)" );
         Vector row = new Vector();
         for (int i = 0; i < Itemset.reglas.size(); i++) {
             Vector first = new Vector();
