@@ -15,19 +15,29 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-/**
- *
- * @author Blas
+/**Este clase representa la ventana
+ * emergente donde se muestran las reglas
+ * de asociación de manera tabulada *
+ * @author Grupo9-IA2017
  */
 class VentanaReglas extends JDialog {
-    public VentanaReglas( JFrame frame ) {
-        super( frame, "Reglas generadas", true );
+   
+	/**
+	 * Este método constructor nos dice como
+	 * será la creación de la instancia de la 
+	 * ventana emergente y de su tabla, 
+	 * que es donde estáran las reglas generadas.
+	 * @param frame
+	 */
+	public VentanaReglas( JFrame frame ) {
+		super(frame, "Reglas generadas", true);        
         
-        Vector cero = new Vector();
-         cero.add( "Nro" );
+		Vector cero = new Vector();
+        cero.add( "Nro" );
         cero.add( "Premisa" );
         cero.add( "Consecuente" );
         cero.add( "Confianza (%)" );
+        
         Vector row = new Vector();
         for (int i = 0; i < Itemset.reglas.size(); i++) {
             Vector first = new Vector();
@@ -37,6 +47,7 @@ class VentanaReglas extends JDialog {
             first.add( Itemset.reglas.get(i).confianza );
             row.add( first );
         }
+        
         TableModel model = new DefaultTableModel(row, cero) {
             public Class getColumnClass(int column) {
               Class returnValue;
@@ -47,17 +58,14 @@ class VentanaReglas extends JDialog {
               }
               return returnValue;
             }
-           };
+        };
+        
         JTable table = new JTable( model );
         table.setAutoCreateRowSorter(true);
         Container c = getContentPane();
         c.setLayout( new FlowLayout() );
-        //c.add( table );
         add(new JScrollPane(table));
         this.pack();
-        this.show();
-        
-    }
-    
- 
+        this.show();        
+    } 
 }
