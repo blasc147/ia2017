@@ -20,17 +20,21 @@ import javax.swing.JTable;
 class MyDialog extends JDialog {
     public MyDialog( JFrame frame ) {
         super( frame, "Reglas generadas", true );
+        
         Vector cero = new Vector();
-        cero.add( "Name" );
-        cero.add( "Roll No" );
-        cero.add( "Grade" );
-        Vector first = new Vector();
-        first.add( "Bhupendra" );
-        first.add( "100" );
-        first.add( "A+" );
+         cero.add( "Nro" );
+        cero.add( "Premisa" );
+        cero.add( "Consecuente" );
+        cero.add( "Confianza" );
         Vector row = new Vector();
-        row.add( first );
-        row.add(cero);
+        for (int i = 0; i < Itemset.reglas.size(); i++) {
+            Vector first = new Vector();
+            first.add(i+1);
+            first.add( Itemset.reglas.get(i).premisa );
+            first.add( Itemset.reglas.get(i).conclusion );
+            first.add( Itemset.reglas.get(i).confianza );
+            row.add( first );
+        }
         JTable table = new JTable( row, cero );
         Container c = getContentPane();
         c.setLayout( new FlowLayout() );

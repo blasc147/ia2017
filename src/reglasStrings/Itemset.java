@@ -5,6 +5,7 @@
  */
 package reglasStrings;
 
+import static java.lang.Math.round;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class Itemset {
     private List < String > itemsets = new ArrayList <> ();
     
     public static int cantReglas =0;
+    public static List <Regla> reglas = new ArrayList<>();  
 
     public List<String> getItemsets() {
         return itemsets;
@@ -24,6 +26,15 @@ public class Itemset {
     public Itemset(List a){
         this.itemsets=a;
     }
+    
+    public static double round(double value, int places) {
+    if (places < 0) throw new IllegalArgumentException();
+
+    long factor = (long) Math.pow(10, places);
+    value = value * factor;
+    long tmp = Math.round(value);
+    return (double) tmp / factor;
+}
     
     public void GenerarRegla(double minConf) {
                 //tupples.remove(tupples.size()-1);
@@ -112,6 +123,8 @@ public class Itemset {
 				cantReglas++;
 				String aux1 = String.format(cantReglas+" - "+" %s ==> %s :	%.2f%c \n", win, lose, Lol * 100, 37);
 				System.out.print(aux1);
+                                double conf = round(Lol*100, 2);
+                                reglas.add(new Regla(win, lose, conf));
 				Ventana.setStringReglas(Ventana.getStringReglas()+aux1);
 				return 1;
 			}
