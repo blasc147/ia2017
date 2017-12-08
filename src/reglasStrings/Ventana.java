@@ -103,7 +103,7 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
 		tfLimiteItemsets = new JTextField();
 		tfLimiteItemsets.setColumns(10);
 		tfLimiteItemsets.setBounds(434, 84, 44, 20);
-                tfLimiteItemsets.setEnabled(false);
+        tfLimiteItemsets.setEnabled(false);
 		contentPane.add(tfLimiteItemsets);
 		
 		textArea1=new JTextArea();
@@ -142,12 +142,12 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
 		contentPane.add(btnVerInformeDeReglas);
 		
 		spinnerSup = new JSpinner();
- 		spinnerSup.setModel(new SpinnerNumberModel(50,1,100,1));
+ 		spinnerSup.setModel(new SpinnerNumberModel(30,1,100,1));
  		spinnerSup.setBounds(147,55,48,20);
  		contentPane.add(spinnerSup);
  		
  		spinnerConf = new JSpinner();
- 		spinnerConf.setModel(new SpinnerNumberModel(50,1,100,1));
+ 		spinnerConf.setModel(new SpinnerNumberModel(70,1,100,1));
  		spinnerConf.setBounds(434,55,46,20);
  		contentPane.add(spinnerConf);
  		
@@ -222,8 +222,7 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
         
         if (e.getSource() == btnVerInformeDeReglas) {
             try{
-                new VentanaInforme(this);           
-            
+                new VentanaInforme(this);            
             }catch(Exception ex){
                 ex.printStackTrace();
             }
