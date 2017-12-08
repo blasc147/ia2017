@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  *
- * @author Blas
+ * @author Grupo9- IA2017
  */
 public class Itemset {
     private List < String > itemsets = new ArrayList <> ();
@@ -35,7 +35,13 @@ public class Itemset {
     long tmp = Math.round(value);
     return (double) tmp / factor;
 }
-    
+    /** Genera todas las reglas posibles que superen la
+     * confianza minima, a partir del conjunto
+     * de itemsets frecuentes, generados por la clase
+     * AprioriConString
+     * 
+     * @param minConf
+     */
     public void GenerarRegla(double minConf) {
                 //tupples.remove(tupples.size()-1);
 		int b = this.itemsets.size();

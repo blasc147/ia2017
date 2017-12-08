@@ -21,7 +21,7 @@ import reglasStrings.Itemset;
 
 /**
  *
- * @author Blas
+ * @author Grupo9 IA-2017
  */
 public class AprioriConStrings {
 
@@ -46,22 +46,12 @@ public class AprioriConStrings {
     private List < Itemset > efes;     
     static int cont=0;
     
-    /** generar apriori itemsets desde un dataser
+    /** generar apriori itemsets desde un dataset
      * 
      * @param args parametros configuracion: args[0] nombre del data, args[1] el minSup (e.g. 0.8 para 80%)
      */
     
-//    public  AprioriConStrings(String[] args) throws Exception{
-//        datosConfiguracion(args);
-//        ejecutar();
-//    }
-//	
-//	public static void main(String[] args) throws Exception {
-//		AprioriConStrings ap = new AprioriConStrings(args);
-//        AprioriConStrings ap2 = new AprioriConStrings(args);
-//    }
-//	
-    /** datos entrada: numItems, numTransactions, and sets minSup */
+    /** datos entrada: numItems, numTransactions, minSup y minConf */
     void datosConfiguracion() throws Exception{        
     	
     	// directorio del dataset
@@ -97,7 +87,12 @@ public class AprioriConStrings {
         outputConfig();
     }
 
-    /** ejecucion del programa */
+    /** Algoritmo Apriori: los pasos importantes del algoritmo son: 1) Obtener 
+     * todos los items de losngitud 1. 2) Genera todos los posibles canditados 
+     * frecuentes hasta que el conjunto Ck+1 este vacio. 3) Generar las reglas
+     * con todos los itemset frecuentes que se obtuvieron
+     * 
+     */
     void ejecutar() throws Exception {
         //tiempo
         long start = System.currentTimeMillis();
@@ -128,17 +123,14 @@ public class AprioriConStrings {
             itemsetNumber++;
         } 
 
-        //display the execution time
+        //duracion de la corrida del algoritmo
         long end = System.currentTimeMillis();
 
         String aux1 = "Encontrados "+nbFrequentSets+ " itemsets frecuentes con soporte mayor o igual a "+(minSup*100)+"% (absolute "+Math.round(numTransactions*minSup)+") \n";
         System.out.print(aux1);
         Ventana.setStringVerItemsetsFrecuentes(Ventana.getStringVerItemsetsFrecuentes()+aux1);
         Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
-        
-//        aux1= "Fin Itemset frecuentes \n";
-//        System.out.print(aux1);
-//        Ventana.setStringVerItemsetsFrecuentes(Ventana.getStringVerItemsetsFrecuentes()+aux1);
+ 
         
         for (int i = 1; i < efes.size(); i++) {
             Itemset itemset = efes.get(i);
@@ -160,15 +152,18 @@ public class AprioriConStrings {
         }
     }
 
-    /** entra el item frecuente y su soporte, se arma una tupla para luego generar las reglas con eso  */
+    /** Genera un conjunto de tuplas: (itemset:soporte)
+     * el conjunto de tuplas es almacenado para luego ser utilizado
+     * en la generacion de reglas de asociacion.
+     */
     private void generarTuplas(String[] itemset, int support) {
     	String New, New1;
 	New = Arrays.toString(itemset);
                 
 	New1 = New.substring(0, New.length() - 1) + ", " + support + "]";
-                //se van guardando los candidatos frecuentes 
-                //aca hay que modificar, hay que crear un objeto cuando termina para generar los H
-                //cada elemento de la tupla tiene el itemset acompañado por el soporte
+        //se van guardando los candidatos frecuentes 
+        //aca hay que modificar, hay que crear un objeto cuando termina para generar los H
+        //cada elemento de la tupla tiene el itemset acompañado por el soporte
 	tupples.add(New1);
 	String aux1= New + "  (" + ((support / (double) numTransactions)) + " " + support + ") \n";
 	System.out.print(aux1);
@@ -176,37 +171,37 @@ public class AprioriConStrings {
 
     }
 
-    /** outputs a message in Sys.err if not used as library */
     private void log(String message) {
     }
 
-   /** info de la corrida
+   /** Resumen con la informacion de la corrida del algoritmo
+    * que se muestra en la pantalla al ejecutar el programa
      */ 
-	private void outputConfig() {
-		//output config
-		//log("Input configuration: "+numItems+" items, "+numTransactions+" transactions, ");
-		//log("minsup = "+minSup+"%");
-		String aux1= "Datos iniciales: "+numItems+" items, "+numTransactions+" transacciones. \n";
-		System.out.print(aux1);
+    private void outputConfig() {
+        //output config
+        //log("Input configuration: "+numItems+" items, "+numTransactions+" transactions, ");
+        //log("minsup = "+minSup+"%");
+        String aux1= "Datos iniciales: "+numItems+" items, "+numTransactions+" transacciones. \n";
+        System.out.print(aux1);
         Ventana.setStringVerEstadisticas(Ventana.getStringVerEstadisticas()+aux1);
-	}
+    }
 
-	/** candidatos de 1, 
-	 * i.e. todos los que estan en el dataset, hay que verificar que no se repitan en una transaccion
-	 */
-	private void crearItemsdeUno() {
-                candidatos = new ArrayList<String[]>();
-            Iterator<String> itr = itemsetst.iterator();
+    /** Gerenera los candidatos de 1 item, 
+     * todos los que estan en el dataset, hay que verificar que no se repitan en una transaccion
+     */
+    private void crearItemsdeUno() {
+        candidatos = new ArrayList<String[]>();
+        Iterator<String> itr = itemsetst.iterator();
         while(itr.hasNext()){
             String[] st = {itr.next()};
             candidatos.add(st);
         }
-	}
+    }
 			
      /**
-     * Comprueba el consumo energetico
-     * Solo mayusculas, si es una 'a' no lo detecta como una 'A'
-     * @param consumoEnergetico
+     * Generacion de candidatos Ck
+     * a partir de Fk-1
+     * @return
      */
     private void crearItemsetsApartirdeAteriores()
     {
@@ -287,8 +282,10 @@ public class AprioriConStrings {
     }
 
     
-    /** analizar la frecuencia de los itemsets {@link itemsets},
-     *  filtra todos los que no superan el minSupp
+    /** Verifica que los {@link itemsets} candidatos, superen el soporte minimo
+     *  recorriendo todas las transacciones del dataset para controlar su 
+     * presencia. Una vez que finaliza el metodo, los itemsets frecuentes
+     * son guardados en {@link candidatos}
      */
     private void generarItemsetFrecuentes() throws Exception{
     	
