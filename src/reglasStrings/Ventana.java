@@ -13,6 +13,9 @@ import javax.swing.event.*;
 import javax.swing.filechooser.*;
 
 import com.sun.org.apache.xml.internal.utils.StringVector;
+import exc.ConfException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeListener;
@@ -44,7 +47,7 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
     private JButton btnVerInformeDeReglas;
     
 	/**
-	 * Con este método se ejecuta la aplicación.
+	 * Con este mï¿½todo se ejecuta la aplicaciï¿½n.
 	 */
 	public static void main(String[] args) {
 					Ventana ventana1 = new Ventana();
@@ -53,7 +56,7 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
 	}
 	
 	/**
-	 * Con este método constructor se crea la 
+	 * Con este mï¿½todo constructor se crea la 
 	 * instancia del objeto Ventana, 
 	 * y se le agregan cada uno de sus componentes visuales.
 	 */	
@@ -159,7 +162,7 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
 	
 	
 	/**Este metodo recibe el evento e 
-	 * para saber que botón se apretó,
+	 * para saber que botï¿½n se apretï¿½,
 	 * y actuar en consecuencia
 	 */
 	public void actionPerformed(ActionEvent e) {
@@ -183,6 +186,12 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
 	        	stringReglas= "";
 	        	stringVerEstadisticas= "";
 	        	stringVerItemsetsFrecuentes= "";
+                        int s =(int)spinnerSup.getValue();
+                        int c = (int)spinnerConf.getValue();
+                        String st= String.valueOf(c);
+                        if(s>c){
+                             JOptionPane.showMessageDialog(null, "El soporte minimo no puede ser mayor que la confianza minima", "Error", JOptionPane.ERROR_MESSAGE);
+                        }else{
 	        	AprioriConStrings ap = new AprioriConStrings();
 	        	ap.datosConfiguracion();
 	        	ap.ejecutar();
@@ -191,8 +200,12 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
 	    		btnVerEstadisticas.setVisible(true);
 	    		btnVerReglas.setVisible(true);
 	    		btnVerItemsetsFrecuentes.setVisible(true);
-			} catch (Exception excep) {
-				excep.printStackTrace();}  
+                        }
+			} catch (ConfException excep) {
+				JOptionPane.showMessageDialog(null, "El dataset no puede contener transacciones con items repetidos","Error", JOptionPane.ERROR_MESSAGE);} 
+                catch (Exception ex) {  
+                Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
+            }  
 		}
         
             if (e.getSource() == btnVerEstadisticas) {
@@ -230,10 +243,10 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
         
     }	
     
-	/**Este método detecta, con el evento e,
+	/**Este mï¿½todo detecta, con el evento e,
 	 * cuando habilitamos y deshabilitamos
 	 * el checkbox que nos permite poner
-	 * un tamaño límite para los itemsets. 
+	 * un tamaï¿½o lï¿½mite para los itemsets. 
 	 */
 	public void stateChanged(ChangeEvent e){
 		if (checkboxLimiteItemsets.isSelected()==true) {

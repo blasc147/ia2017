@@ -5,6 +5,7 @@
  */
 package reglasStrings;
 
+import exc.ConfException;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileReader;
@@ -12,6 +13,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -93,7 +95,7 @@ public class AprioriConStrings {
      * con todos los itemset frecuentes que se obtuvieron
      * 
      */
-    void ejecutar() throws Exception {
+    void ejecutar() throws Exception, ConfException {
         //tiempo
         long start = System.currentTimeMillis();
         // generamos candidatos de 1
@@ -107,7 +109,11 @@ public class AprioriConStrings {
         while (candidatos.size()>0 && itemsetNumber<=minItemsets)
         {
             //vamos verificando que los itemsets cumplan en minSup -- generacion de los Fk
-            generarItemsetFrecuentes();
+            try{
+                generarItemsetFrecuentes();
+            }catch(ConfException e){
+                throw new ConfException();
+            }
 
             if(candidatos.size()!=0){
                 nbFrequentSets+=candidatos.size();
@@ -282,7 +288,7 @@ public class AprioriConStrings {
      * presencia. Una vez que finaliza el metodo, los itemsets frecuentes
      * son guardados en {@link candidatos}
      */
-    private void generarItemsetFrecuentes() throws Exception{
+    private void generarItemsetFrecuentes() throws Exception, ConfException{
     	
         String aux1= "Procesando " + candidatos.size()+ " itemsets de tamaño "+candidatos.get(0).length+"\n";
         System.out.print(aux1);
@@ -304,6 +310,13 @@ public class AprioriConStrings {
 			String line = data_in.readLine();
 			line2booleanArray(line, transas);
 			// verificando por cada candidato
+                        Collections.sort(transas.subList(1, transas.size()));
+                        
+                        for(int j = 0; j < transas.size()-1; j++){
+                            if(transas.get(j).equals(transas.get(j+1))){
+                                throw new ConfException();
+                            }
+                        }
 			for (int c = 0; c < candidatos.size(); c++) {
 				match = true; // bandera
 				// si no esta el itemset en la transaccion ponemos a falso
