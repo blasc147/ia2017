@@ -79,7 +79,7 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
                 
 		JLabel lblAlgoritmoAPriori = new JLabel("Reglas de Asociación:Apriori");
 		lblAlgoritmoAPriori.setFont(new Font("Tw Cen MT Condensed Extra Bold", Font.BOLD, 30));
-		lblAlgoritmoAPriori.setBounds(120, 11, 386, 33);
+		lblAlgoritmoAPriori.setBounds(120, 11, 418, 33);
 		contentPane.add(lblAlgoritmoAPriori);
 		
 		JLabel lblMinSup = new JLabel("Soporte m\u00EDnimo (%)");
@@ -87,15 +87,15 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
         contentPane.add(lblMinSup);
 		
 		JLabel lblMinConf = new JLabel("Confianza m\u00EDnima (%)");
- 		lblMinConf.setBounds(260, 58, 144, 14);
+ 		lblMinConf.setBounds(328, 55, 144, 14);
 		contentPane.add(lblMinConf);
 		
-		JLabel lblDataset = new JLabel("Dataset(.dat):");
-		lblDataset.setBounds(10, 118, 46, 14);
+		JLabel lblDataset = new JLabel("Dataset (.dat):");
+		lblDataset.setBounds(10, 118, 89, 14);
 		contentPane.add(lblDataset);
 		
-		lblLimiteItemsets = new JLabel("Max. items por regla:");
-		lblLimiteItemsets.setBounds(260, 83, 170, 23);
+		lblLimiteItemsets = new JLabel("Cantidad m\u00E1xima de items por regla:");
+		lblLimiteItemsets.setBounds(328, 83, 186, 23);
         lblLimiteItemsets.setEnabled(false);
 		contentPane.add(lblLimiteItemsets);
 		
@@ -105,7 +105,7 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
 		
 		tfLimiteItemsets = new JTextField();
 		tfLimiteItemsets.setColumns(10);
-		tfLimiteItemsets.setBounds(434, 84, 44, 20);
+		tfLimiteItemsets.setBounds(541, 84, 44, 20);
         tfLimiteItemsets.setEnabled(false);
 		contentPane.add(tfLimiteItemsets);
 		
@@ -151,10 +151,10 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
  		
  		spinnerConf = new JSpinner();
  		spinnerConf.setModel(new SpinnerNumberModel(70,1,100,1));
- 		spinnerConf.setBounds(434,55,46,20);
+ 		spinnerConf.setBounds(541,55,44,20);
  		contentPane.add(spinnerConf);
  		
- 		checkboxLimiteItemsets = new JCheckBox("Habilitar tama\u00F1o l\u00EDmite de itemsets");
+ 		checkboxLimiteItemsets = new JCheckBox("Habilitar tama\u00F1o m\u00E1ximo de items por regla");
  		checkboxLimiteItemsets.setBounds(6, 83, 237, 23);
  		checkboxLimiteItemsets.addChangeListener(this);
  		contentPane.add(checkboxLimiteItemsets);
@@ -183,6 +183,7 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
         
         if (e.getSource() == btnEjecutar) {
 	        try {
+	        	Itemset.reglas.clear();
 	        	stringReglas= "";
 	        	stringVerEstadisticas= "";
 	        	stringVerItemsetsFrecuentes= "";
@@ -235,7 +236,7 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
         
         if (e.getSource() == btnVerInformeDeReglas) {
             try{
-                new VentanaInforme(this);            
+                new VentanaInforme();            
             }catch(Exception ex){
                 ex.printStackTrace();
             }
