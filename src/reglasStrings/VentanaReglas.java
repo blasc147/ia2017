@@ -17,20 +17,20 @@ import javax.swing.table.TableModel;
 
 /**Este clase representa la ventana
  * emergente donde se muestran las reglas
- * de asociación de manera tabulada *
+ * de asociacion de manera tabulada *
  * @author Grupo9-IA2017
  */
 class VentanaReglas extends JDialog {
    
 	/**
-	 * Este método constructor nos dice como
-	 * será la creación de la instancia de la 
+	 * Este metodo constructor nos dice como
+	 * sera la creacion de la instancia de la 
 	 * ventana emergente y de su tabla, 
-	 * que es donde estáran las reglas generadas.
+	 * que es donde estaran las reglas generadas.
 	 * @param frame
 	 */
 	public VentanaReglas( JFrame frame ) {
-		super(frame, "Reglas generadas", true);        
+		super(frame, "Todas las reglas generadas", true);        
         
 		Vector cero = new Vector();
         cero.add( "Nro" );

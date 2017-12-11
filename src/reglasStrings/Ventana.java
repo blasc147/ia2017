@@ -8,6 +8,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.filechooser.*;
@@ -19,6 +23,9 @@ import java.util.logging.Logger;
 
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeListener;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
 
 public class Ventana extends JFrame implements ActionListener, ChangeListener{
 
@@ -41,10 +48,12 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
     private JButton btnVerReglas;
     private static String stringReglas;
     private JButton btnVerEstadisticas;
+    private JButton ayuda;
     private static String stringVerEstadisticas;
     private JButton btnVerItemsetsFrecuentes;
     private static String stringVerItemsetsFrecuentes;
     private JButton btnVerInformeDeReglas;
+    private JPanel panel_1;
     
 	/**
 	 * Con este m�todo se ejecuta la aplicaci�n.
@@ -64,100 +73,117 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setTitle("Association rules:Apriori");
-		this.setBounds(50, 50, 830, 700);
+		this.setBounds(50, 50, 830, 504);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		this.setContentPane(contentPane);
-		contentPane.setLayout(null);
 		
 		fc = new JFileChooser("G:\\eclipse-workspace\\ia2017-master");
 		
         openButton = new JButton("Seleccionar archivo");
-        openButton.setBounds(120, 113, 150, 23);
+        openButton.setBounds(260, 132, 150, 23);
         openButton.addActionListener(this);
+        contentPane.setLayout(null);
+        
+        lblArchivoSubido = new JLabel("");
+        lblArchivoSubido.setBounds(445, 137, 169, 14);
+        contentPane.add(lblArchivoSubido);
         contentPane.add(openButton);  
                 
-		JLabel lblAlgoritmoAPriori = new JLabel("Reglas de Asociación:Apriori");
+		JLabel lblAlgoritmoAPriori = new JLabel("");
+		lblAlgoritmoAPriori.setIcon(new ImageIcon("C:\\Users\\Blas\\Downloads\\logo.png"));
+		lblAlgoritmoAPriori.setBounds(125, 0, 573, 44);
 		lblAlgoritmoAPriori.setFont(new Font("Tw Cen MT Condensed Extra Bold", Font.BOLD, 30));
-		lblAlgoritmoAPriori.setBounds(120, 11, 418, 33);
 		contentPane.add(lblAlgoritmoAPriori);
 		
-		JLabel lblMinSup = new JLabel("Soporte m\u00EDnimo (%)");
- 		lblMinSup.setBounds(10, 58, 127, 14);
+		JLabel lblMinSup = new JLabel("Soporte m\u00EDnimo (%):");
+		lblMinSup.setBounds(120, 58, 127, 14);
+		lblMinSup.setToolTipText("El valor de minimo soporte debe ser entre 1% - 100%");
         contentPane.add(lblMinSup);
 		
-		JLabel lblMinConf = new JLabel("Confianza m\u00EDnima (%)");
- 		lblMinConf.setBounds(328, 55, 144, 14);
+		JLabel lblMinConf = new JLabel("Confianza m\u00EDnima (%):");
+		lblMinConf.setBounds(396, 58, 164, 14);
+		lblMinConf.setToolTipText("El valor de minima confianza debe ser entre 1% - 100%");
 		contentPane.add(lblMinConf);
 		
 		JLabel lblDataset = new JLabel("Dataset (.dat):");
-		lblDataset.setBounds(10, 118, 89, 14);
+		lblDataset.setBounds(120, 137, 106, 14);
 		contentPane.add(lblDataset);
 		
 		lblLimiteItemsets = new JLabel("Cantidad m\u00E1xima de items por regla:");
-		lblLimiteItemsets.setBounds(328, 83, 186, 23);
+		lblLimiteItemsets.setBounds(396, 90, 213, 23);
         lblLimiteItemsets.setEnabled(false);
 		contentPane.add(lblLimiteItemsets);
 		
-		lblArchivoSubido = new JLabel("");
-		lblArchivoSubido.setBounds(280, 117, 169, 14);
-		contentPane.add(lblArchivoSubido);
-		
 		tfLimiteItemsets = new JTextField();
+		tfLimiteItemsets.setBounds(649, 91, 44, 20);
 		tfLimiteItemsets.setColumns(10);
-		tfLimiteItemsets.setBounds(541, 84, 44, 20);
         tfLimiteItemsets.setEnabled(false);
 		contentPane.add(tfLimiteItemsets);
 		
-		textArea1=new JTextArea();
-		textArea1.setEditable(false);
-        scrollpane1=new JScrollPane(textArea1);    
-        scrollpane1.setBounds(10,200,575,460);
-        contentPane.add(scrollpane1);
-		
 		btnEjecutar = new JButton("Ejecutar");
-		btnEjecutar.setBounds(216, 166, 89, 23);
+		btnEjecutar.setBounds(381, 177, 89, 23);
         btnEjecutar.addActionListener(this);
 		contentPane.add(btnEjecutar);
 		
 		btnVerEstadisticas = new JButton("Ver Estad\u00ECsticas");
+		btnVerEstadisticas.setBounds(120, 177, 130, 23);
 		btnVerEstadisticas.addActionListener(this);
 		contentPane.add(btnVerEstadisticas);
-    	btnVerEstadisticas.setBounds(120, 166, 130, 23);
-		btnVerEstadisticas.setVisible(true);
+		btnVerEstadisticas.setVisible(false);
 		
 		btnVerReglas = new JButton("Ver todas las Reglas");
+		btnVerReglas.setBounds(260, 177, 160, 23);
 		btnVerReglas.addActionListener(this);
 		contentPane.add(btnVerReglas);
-		btnVerReglas.setBounds(270, 166, 160, 23);
-		btnVerReglas.setVisible(true);
+		btnVerReglas.setVisible(false);
 		
 		btnVerItemsetsFrecuentes = new JButton("Ver Itemsets Frecuentes");
+		btnVerItemsetsFrecuentes.setBounds(620, 177, 180, 23);
 		btnVerItemsetsFrecuentes.addActionListener(this);
-		btnVerItemsetsFrecuentes.setBounds(630, 166, 180, 23);
-		btnVerItemsetsFrecuentes.setVisible(true);
+		btnVerItemsetsFrecuentes.setVisible(false);
 		contentPane.add(btnVerItemsetsFrecuentes);
 		
 		btnVerInformeDeReglas = new JButton("Ver Informe de Reglas");
+		btnVerInformeDeReglas.setBounds(430, 177, 180, 23);
 		btnVerInformeDeReglas.addActionListener(this);
-		btnVerInformeDeReglas.setBounds(440, 166, 180, 23);
-		btnVerInformeDeReglas.setVisible(true);
+		btnVerInformeDeReglas.setVisible(false);
 		contentPane.add(btnVerInformeDeReglas);
 		
 		spinnerSup = new JSpinner();
+		spinnerSup.setBounds(277, 55, 48, 20);
  		spinnerSup.setModel(new SpinnerNumberModel(30,1,100,1));
- 		spinnerSup.setBounds(147,55,48,20);
  		contentPane.add(spinnerSup);
  		
  		spinnerConf = new JSpinner();
+ 		spinnerConf.setBounds(570, 55, 44, 20);
  		spinnerConf.setModel(new SpinnerNumberModel(70,1,100,1));
- 		spinnerConf.setBounds(541,55,44,20);
  		contentPane.add(spinnerConf);
  		
- 		checkboxLimiteItemsets = new JCheckBox("Habilitar tama\u00F1o m\u00E1ximo de items por regla");
- 		checkboxLimiteItemsets.setBounds(6, 83, 237, 23);
+ 		checkboxLimiteItemsets = new JCheckBox("Limitar cant. de items por regla");
+ 		checkboxLimiteItemsets.setBounds(120, 90, 256, 23);
  		checkboxLimiteItemsets.addChangeListener(this);
  		contentPane.add(checkboxLimiteItemsets);
+ 		
+ 		panel_1 = new JPanel();
+ 		panel_1.setBounds(442, 132, 172, 23);
+ 		panel_1.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+ 		contentPane.add(panel_1);
+ 		
+ 		textArea1=new JTextArea();
+ 		textArea1.setEditable(false);
+ 		
+ 		scrollpane1=new JScrollPane(textArea1);
+ 		scrollpane1.setBounds(15, 211, 794, 243);
+ 		contentPane.add(scrollpane1);
+ 		
+ 		ayuda = new JButton("?");
+ 		ayuda.setToolTipText("Soporte en linea");
+ 		ayuda.addActionListener(this);
+ 		ayuda.setBounds(649, 54, 44, 23);
+ 		contentPane.add(ayuda);
+ 		
+ 		
 	}
 	
 	
@@ -187,9 +213,11 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
 	        	stringReglas= "";
 	        	stringVerEstadisticas= "";
 	        	stringVerItemsetsFrecuentes= "";
+                        if(file==null){
+                            JOptionPane.showMessageDialog(null, "Especificar archivo dataset", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
                         int s =(int)spinnerSup.getValue();
                         int c = (int)spinnerConf.getValue();
-                        String st= String.valueOf(c);
                         if(s>c){
                              JOptionPane.showMessageDialog(null, "El soporte minimo no puede ser mayor que la confianza minima", "Error", JOptionPane.ERROR_MESSAGE);
                         }else{
@@ -197,10 +225,11 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
 	        	ap.datosConfiguracion();
 	        	ap.ejecutar();
 	        	textArea1.setText(stringVerEstadisticas);
-	    		btnEjecutar.setBounds(10, 166, 90, 23);
+	    		btnEjecutar.setBounds(15, 177, 90, 23);
 	    		btnVerEstadisticas.setVisible(true);
 	    		btnVerReglas.setVisible(true);
 	    		btnVerItemsetsFrecuentes.setVisible(true);
+	    		btnVerInformeDeReglas.setVisible(true);
                         }
 			} catch (ConfException excep) {
 				JOptionPane.showMessageDialog(null, "El dataset no puede contener transacciones con items repetidos","Error", JOptionPane.ERROR_MESSAGE);} 
@@ -242,7 +271,23 @@ public class Ventana extends JFrame implements ActionListener, ChangeListener{
             }
         }
         
+        if (e.getSource() == ayuda) {
+            try{
+                Desktop.getDesktop().browse(new URL("https://www.ibm.com/support/knowledgecenter/es/SSEPGG_8.2.0/com.ibm.im.visual.doc/idmu0mst25.html").toURI());            
+            }catch(MalformedURLException ex){
+                ex.printStackTrace();
+            } catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (URISyntaxException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+        }
+        
     }	
+	
+	
     
 	/**Este m�todo detecta, con el evento e,
 	 * cuando habilitamos y deshabilitamos
